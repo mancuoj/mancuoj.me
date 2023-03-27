@@ -1,2 +1,1 @@
-# mancuoj.me
-My personal website 🤖
+# My Personal Website
