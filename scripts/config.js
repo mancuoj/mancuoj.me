@@ -6,6 +6,11 @@ export const links = [
   },
   {
     text: '',
+    icon: 'article.svg',
+    url: 'https://blog.mancuoj.me'
+  },
+  {
+    text: '',
     icon: 'csdn.svg',
     url: 'https://blog.csdn.net/Mancuojie'
   },
