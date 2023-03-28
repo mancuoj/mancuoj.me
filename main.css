@@ -21,6 +21,10 @@
     --c-scroll-hover: #555555;
     color-scheme: dark;
   }
+
+  .links {
+    filter: invert(100%);
+  }
 }
 
 ::-webkit-scrollbar {
@@ -44,11 +48,24 @@
 body {
   background-color: var(--c-bg);
   font-family: 'IBM Plex Sans', sans-serif;
-  padding: 8vh;
+  padding: 15vh;
   max-width: 75ch;
   margin: 0 auto;
 }
 
 .title {
   font-family: 'Hubot Sans', sans-serif;
+  font-size: 1.25rem;
+}
+
+.links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  list-style: none;
+}
+
+.link-icon {
+  width: 1.5rem;
+  height: 1.5rem;
 }
