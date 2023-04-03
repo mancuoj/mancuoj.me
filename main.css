@@ -48,7 +48,7 @@
 body {
   background-color: var(--c-bg);
   font-family: 'IBM Plex Sans', sans-serif;
-  padding: 15vh;
+  padding: 10vh;
   max-width: 75ch;
   margin: 0 auto;
 }
