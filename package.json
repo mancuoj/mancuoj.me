@@ -20,7 +20,9 @@
   "devDependencies": {
     "@antfu/eslint-config": "1.0.0-beta.27",
     "@iconify-json/carbon": "^1.1.23",
+    "@iconify-json/fluent-emoji": "^1.1.17",
     "@iconify-json/lucide": "^1.1.143",
+    "@iconify-json/simple-icons": "^1.1.81",
     "@types/node": "^20.10.0",
     "@types/react": "^18.2.39",
     "@types/react-dom": "^18.2.17",

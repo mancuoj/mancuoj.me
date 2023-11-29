@@ -12,7 +12,7 @@ export default {
   plugins: [
     iconsPlugin({
       // https://github.com/egoist/tailwindcss-icons
-      collections: getIconCollections(['lucide', 'carbon']),
+      collections: getIconCollections(['lucide', 'carbon', 'fluent-emoji', 'simple-icons']),
     }),
   ],
 }
