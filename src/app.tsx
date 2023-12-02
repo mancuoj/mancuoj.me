@@ -6,6 +6,7 @@ interface SocialLink {
   name: string
   url: string
   icon: string
+  color?: string
 }
 
 const socialLinks: SocialLink[] = [
@@ -13,26 +14,35 @@ const socialLinks: SocialLink[] = [
     name: 'GitHub',
     url: 'https://github.com/mancuoj',
     icon: 'i-simple-icons-github',
+    color: '##333333',
   },
   {
     name: 'x',
     url: 'https://x.com/humancuoj',
     icon: 'i-simple-icons-x',
+    color: '#000000',
   },
   {
     name: 'Juejin',
     url: 'https://juejin.cn/user/3466105460624760',
     icon: 'i-simple-icons-juejin',
+    color: '#0284c7',
   },
   {
     name: 'Bilibili',
     url: 'https://space.bilibili.com/44805047',
     icon: 'i-simple-icons-bilibili',
+    color: '#db2777',
   },
   {
     name: 'Blog',
     url: 'https://blog.mancuoj.me',
     icon: 'i-carbon-ai-status',
+  },
+  {
+    name: 'Garden',
+    url: 'https://garden.mancuoj.me',
+    icon: 'i-fluent-emoji-potted-plant',
   },
 ]
 
@@ -74,7 +84,7 @@ export default function App() {
                       href={item.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="flex items-center justify-center"
+                      className="flex items-center justify-center filter grayscale hover:filter-none"
                       data-cursor="block"
                     >
                       <i className={`w-6 h-6 ${item.icon}`}></i>
