@@ -71,10 +71,9 @@ export default function App() {
             </div>
             <div className="flex flex-col content-between gap-4">
               <h1 className="font-bold font-serif text-3xl" data-cursor="text">
-                Hi, I'm&nbsp;
-                <span data-cursor="block">
-                  mancuoj
-                </span>
+                Hi, I'm
+                {' '}
+                mancuoj
               </h1>
               <div className="flex gap-3 justify-end">
                 {
