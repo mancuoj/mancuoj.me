@@ -3,44 +3,31 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "deps:upgrade": "taze -wi",
-    "postinstall": "simple-git-hooks"
+    "format": "prettier --cache --write ."
   },
   "dependencies": {
-    "@egoist/tailwindcss-icons": "^1.7.1",
-    "ipad-cursor": "^0.5.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@fontsource-variable/inter": "latest",
+    "@fontsource-variable/source-serif-4": "latest",
+    "clsx": "latest",
+    "framer-motion": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "tailwind-merge": "latest"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "1.0.0-beta.27",
-    "@iconify-json/carbon": "^1.1.27",
-    "@iconify-json/fluent-emoji": "^1.1.18",
-    "@iconify-json/lucide": "^1.1.149",
-    "@iconify-json/simple-icons": "^1.1.86",
-    "@types/node": "^20.10.5",
-    "@types/react": "^18.2.45",
-    "@types/react-dom": "^18.2.18",
-    "@vitejs/plugin-react-swc": "^3.5.0",
-    "autoprefixer": "^10.4.16",
-    "eslint": "^8.56.0",
-    "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.5",
-    "lint-staged": "^15.2.0",
-    "postcss": "^8.4.32",
-    "simple-git-hooks": "^2.9.0",
-    "tailwindcss": "^3.4.0",
-    "taze": "^0.13.1",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.10"
+    "@egoist/tailwindcss-icons": "latest",
+    "@iconify-json/lucide": "latest",
+    "@mancuoj/prettier-config": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@vitejs/plugin-react-swc": "latest",
+    "autoprefixer": "latest",
+    "postcss": "latest",
+    "prettier": "latest",
+    "tailwindcss": "latest",
+    "typescript": "latest",
+    "vite": "latest"
   },
-  "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged"
-  },
-  "lint-staged": {
-    "*": "eslint --fix"
-  }
+  "packageManager": "pnpm@9.12.1",
+  "prettier": "@mancuoj/prettier-config"
 }
