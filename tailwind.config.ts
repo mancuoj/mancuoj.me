@@ -9,7 +9,6 @@ export default {
       fontFamily: {
         sans: ['"Inter Variable"', ...defaultTheme.fontFamily.sans],
         serif: ['"Source Serif 4 Variable"', ...defaultTheme.fontFamily.serif],
-        mono: ['"Monaspace Xenon"', ...defaultTheme.fontFamily.mono],
       },
     },
   },
