@@ -1,0 +1,138 @@
+:root {
+  --font-sans: 'LXGW Bright Medium', sans-serif;
+  --radius: 0.25rem;
+  --viewport-width: 42rem;
+  --viewport-padding: 1rem;
+
+  /* https://stephango.com/flexoki */
+  --background: rgb(255, 252, 240);
+  --secondary: rgb(242, 240, 229);
+  --foreground: rgb(16, 15, 15);
+  --muted: rgb(111, 110, 105);
+  --faint: rgb(183, 181, 172);
+  --accent: rgb(36, 131, 123);
+  --success: rgb(102, 128, 11);
+  --destructive: rgb(175, 48, 41);
+  --warning: rgb(188, 82, 21);
+  --border: rgb(230, 228, 217);
+  --hovered-border: rgb(218, 216, 206);
+  --active-border: rgb(206, 205, 195);
+}
+
+.dark {
+  --background: rgb(16, 15, 15);
+  --secondary: rgb(28, 27, 26);
+  --foreground: rgb(206, 205, 195);
+  --muted: rgb(135, 133, 128);
+  --faint: rgb(87, 86, 83);
+  --accent: rgb(58, 169, 159);
+  --success: rgb(135, 154, 57);
+  --destructive: rgb(209, 77, 65);
+  --warning: rgb(218, 112, 44);
+  --border: rgb(40, 39, 38);
+  --hovered-border: rgb(52, 51, 49);
+  --active-border: rgb(64, 62, 60);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+::-moz-selection {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+::selection {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+button {
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  outline: none;
+  background-color: transparent;
+  color: var(--foreground);
+  cursor: pointer;
+  user-select: none;
+}
+
+button:hover {
+  border-color: var(--hovered-border);
+  background-color: var(--secondary);
+}
+
+button:focus-visible {
+  border-color: var(--active-border);
+}
+
+a {
+  all: unset;
+}
+
+[x-cloak] {
+  display: none !important;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  line-height: 1.5;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  display: grid;
+  grid-template-columns:
+    1fr
+    min(var(--viewport-width), calc(100% - var(--viewport-padding) * 2))
+    1fr;
+  gap: 0 var(--viewport-padding);
+}
+
+.app > * {
+  grid-column: 2;
+}
+
+.full-bleed {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.title {
+  margin: 20rem 0 1rem;
+  font-size: 2rem;
+}
+
+.btn-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn {
+  padding: 0.5rem 0.75rem;
+}

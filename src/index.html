@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="logo.svg" />
+    <link
+      rel="stylesheet"
+      href="https://chinese-fonts-cdn.deno.dev/packages/lxgwwenkaibright/dist/LXGWBright-Medium/result.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="main.js"></script>
+    <title>mancuoj</title>
+  </head>
+
+  <body
+    x-cloak
+    x-data="{ isDark: $persist(false) }"
+    :class="{ dark: isDark }"
+    @keyup.d.window="isDark = !isDark"
+  >
+    <div class="app">
+      <div class="title">Hi, I'm mancuoj</div>
+      <div class="btn-group">
+        <button class="btn" @click="isDark = !isDark" x-text="isDark ? 'Light' : 'Dark'"></button>
+        <a href="https://github.com/mancuoj" target="_blank" rel="noopener noreferrer">
+          <button class="btn">GitHub</button>
+        </a>
+      </div>
+    </div>
+  </body>
+</html>
