@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@mancuoj/prettier-config": "^0.5.3",
-    "prettier": "^3.7.3"
+    "prettier": "^3.7.4"
   },
   "prettier": "@mancuoj/prettier-config"
 }
