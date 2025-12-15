@@ -9,7 +9,7 @@
     "alpinejs": "^3.15.2"
   },
   "devDependencies": {
-    "@mancuoj/prettier-config": "^0.5.3",
+    "@mancuoj/prettier-config": "^0.5.4",
     "prettier": "^3.7.4"
   },
   "prettier": "@mancuoj/prettier-config"
