@@ -5,8 +5,8 @@
     "format": "prettier -w ."
   },
   "dependencies": {
-    "@alpinejs/persist": "^3.15.2",
-    "alpinejs": "^3.15.2"
+    "@alpinejs/persist": "^3.15.3",
+    "alpinejs": "^3.15.3"
   },
   "devDependencies": {
     "@mancuoj/prettier-config": "^0.5.4",
