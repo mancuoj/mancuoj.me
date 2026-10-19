@@ -1,0 +1,9 @@
+# Files that are not part of the published site.
+.git
+.gitignore
+.DS_Store
+.netlify
+netlify.toml
+wrangler.jsonc
+.assetsignore
+node_modules
