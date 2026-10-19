@@ -6,3 +6,4 @@ netlify.toml
 wrangler.jsonc
 .assetsignore
 node_modules
+.wrangler
