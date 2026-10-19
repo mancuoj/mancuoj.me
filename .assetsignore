@@ -1,8 +1,6 @@
 .git
 .gitignore
 .DS_Store
-.netlify
-netlify.toml
 wrangler.jsonc
 .assetsignore
 node_modules

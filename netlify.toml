@@ -1,4 +1,0 @@
-[build]
-  # fully static — no build step, Netlify just publishes the repo root
-  command = ""
-  publish = "."
