@@ -1,11 +1,7 @@
 {
   "name": "mancuoj-me",
   "compatibility_date": "2026-10-19",
-  // The repo root is the site (same as Netlify's `publish = "."`).
-  // Files listed in .assetsignore are not uploaded.
   "assets": {
     "directory": "./"
   }
-  // The mancuoj.me custom domain is attached in the Cloudflare dashboard
-  // after the Netlify CNAME is removed, not from this file.
 }

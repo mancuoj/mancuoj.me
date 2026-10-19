@@ -1,4 +1,3 @@
-# Files that are not part of the published site.
 .git
 .gitignore
 .DS_Store
