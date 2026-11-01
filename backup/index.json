@@ -1,5 +1,15 @@
 [
   {
+    "number": 10,
+    "title": "十一月记",
+    "date": "2026-11-01",
+    "updated": "2026-11-01",
+    "tags": [
+      "notes"
+    ],
+    "source": "https://github.com/mancuoj/mancuoj.github.io/issues/10"
+  },
+  {
     "number": 7,
     "title": "十月记",
     "date": "2026-10-05",
