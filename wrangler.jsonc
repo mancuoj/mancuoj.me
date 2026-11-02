@@ -4,5 +4,9 @@
   "assets": {
     "directory": "./docs",
     "not_found_handling": "404-page"
-  }
+  },
+  "routes": [
+    { "pattern": "mancuoj.me", "custom_domain": true },
+    { "pattern": "www.mancuoj.me", "custom_domain": true }
+  ]
 }
