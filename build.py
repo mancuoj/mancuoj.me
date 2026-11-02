@@ -189,7 +189,7 @@ class Builder:
                     updated=self._local_time(issue["updated_at"]),
                     date=created.strftime("%Y-%m-%d"),
                     year=created.strftime("%Y"),
-                    url=f"{self.base}/post/{issue['number']}.html",
+                    url=f"{self.base}/post/{issue['number']}",
                     source=issue["html_url"],
                     pinned=issue["number"] in pinned_numbers or (bool(self.pin_label) and self.pin_label in names),
                     tags=[Tag(name=n, slug=slugify(n)) for n in names if n not in self.exclude],

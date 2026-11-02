@@ -20,11 +20,9 @@ on:
 permissions:
   contents: write
   issues: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages-${{ github.ref }}
+  group: deploy-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -79,25 +77,10 @@ jobs:
             git push origin HEAD:main
           fi
 
-      - name: Setup Pages
+      - name: Deploy to Cloudflare Workers
         if: github.event_name != 'pull_request'
-        uses: actions/configure-pages@v6
-
-      - name: Upload artifact
-        if: github.event_name != 'pull_request'
-        uses: actions/upload-pages-artifact@v5
+        uses: cloudflare/wrangler-action@v4
         with:
-          path: docs
-
-  deploy:
-    name: Deploy to GitHub Pages
-    needs: build
-    if: github.event_name != 'pull_request'
-    runs-on: ubuntu-24.04
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy
-        id: deployment
-        uses: actions/deploy-pages@v5
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy

@@ -56,7 +56,7 @@ def build_sitemap(posts: list[Post], cfg: dict, base: str, out: Path) -> None:
     newest = max((p.updated for p in posts), default=None)
     newest = newest.strftime(SITE_DATE) if newest else ""
     urls = []
-    for loc in (f"{base}/", f"{base}/tags.html"):
+    for loc in (f"{base}/", f"{base}/tags"):
         mod = f"<lastmod>{newest}</lastmod>" if newest else ""
         urls.append(f"  <url><loc>{loc}</loc>{mod}</url>")
     for p in posts:
