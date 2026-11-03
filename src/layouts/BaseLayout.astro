@@ -11,10 +11,12 @@ interface Props {
   hideHeader?: boolean;
 }
 
+const defaultImage = new URL('/avatar.png', site.homeUrl).toString();
+
 const {
   title,
   description = site.description,
-  image = site.avatar,
+  image = defaultImage,
   article,
   hideHeader = false,
 } = Astro.props;
@@ -32,7 +34,7 @@ const canonical = new URL(Astro.url.pathname.replace(/\.html$/, ''), site.homeUr
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" href={site.avatar} />
+    <link rel="icon" href="/avatar.png" />
     <link rel="alternate" type="application/rss+xml" title={site.title} href="/rss.xml" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fafaf9" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111110" />
