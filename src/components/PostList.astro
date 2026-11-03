@@ -9,25 +9,25 @@ interface Props {
 const { groups } = Astro.props;
 ---
 
-<section class="mt-10 space-y-8" aria-label="文章">
+<section class="mt-10 space-y-10" aria-label="文章">
   {
     groups.map((group) => (
-      <section>
-        <h2 class="border-b border-line pb-2 text-xs tracking-[0.08em] text-muted tabular-nums">
+      <section class="grid gap-3 sm:grid-cols-[3.5rem_minmax(0,1fr)] sm:gap-x-6">
+        <h2 class="text-sm text-muted underline decoration-line underline-offset-4 tabular-nums sm:sticky sm:top-4 sm:self-start sm:leading-7">
           {group.year}
         </h2>
-        <ol class="mt-1">
+        <ol class="min-w-0">
           {group.posts.map((post) => (
             <li>
               <a
                 href={post.url}
-                class="group flex items-baseline justify-between gap-6 py-2.5 leading-6"
+                class="group flex items-baseline justify-between gap-6 py-1 leading-6 sm:block"
               >
-                <span class="text-[15px] text-fg transition-colors group-hover:text-muted">
+                <span class="text-[15px] text-fg underline decoration-line underline-offset-4 transition-colors group-hover:text-muted">
                   {post.title}
                   {post.pinned && <span class="ml-1 text-[0.72em] align-[0.12em]">✳</span>}
                 </span>
-                <time datetime={post.date} class="shrink-0 whitespace-nowrap text-[13px] text-faint tabular-nums">
+                <time datetime={post.date} class="shrink-0 whitespace-nowrap text-[13px] text-faint tabular-nums sm:ml-2">
                   {listDate(post.created)}
                 </time>
               </a>
