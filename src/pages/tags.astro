@@ -6,24 +6,12 @@ import { listDate } from '../lib/dates';
 
 const posts = await getPosts();
 const tags = tagsIndex(posts);
-
-function textOn(hex: string): string {
-  const value = hex.replace('#', '');
-  const channels = [0, 2, 4].map((offset) => Number.parseInt(value.slice(offset, offset + 2), 16) / 255);
-  const [r, g, b] = channels.map((channel) =>
-    channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4,
-  );
-  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-  const white = 1.05 / (luminance + 0.05);
-  const black = (luminance + 0.05) / 0.05;
-  return black > white ? '#111110' : '#ffffff';
-}
 ---
 
 <BaseLayout title="标签">
   <h1 class="sr-only">标签</h1>
 
-  <div class="mt-12 flex flex-wrap items-center gap-x-5 gap-y-2 text-[15px] sm:mt-16" id="tag-filter" role="group" aria-label="按标签筛选">
+  <div class="mt-12 flex flex-wrap items-center gap-x-5 gap-y-2 sm:mt-16" id="tag-filter" role="group" aria-label="按标签筛选">
     <button class="tag-filter-item tag-filter-item--all" type="button" data-tag="*" aria-pressed="true">All</button>
     {
       tags.map((tag) => (
@@ -32,7 +20,7 @@ function textOn(hex: string): string {
           type="button"
           data-tag={tag.slug}
           aria-pressed="false"
-          style={`--tag: #${tag.color}; --tag-fg: ${textOn(tag.color)}`}
+          style={`--tag: #${tag.color}`}
         >
           {tag.name}
         </button>
