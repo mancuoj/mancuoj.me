@@ -1,8 +1,6 @@
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
 /** Dates are stored as a shifted Date whose UTC fields are the site's local date. */
 export function listDate(date: Date): string {
-  return `${MONTHS[date.getUTCMonth()]} ${date.getUTCDate()}`;
+  return `${date.getUTCMonth() + 1} 月 ${date.getUTCDate()} 日`;
 }
 
 export function fullDate(date: Date): string {
