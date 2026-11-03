@@ -63,7 +63,7 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
           post.tags.map((tag) => (
             <>
               <span aria-hidden="true" class="text-faint">·</span>
-              <a href={`/tags/#${tag.slug}`} class="transition-colors hover:text-fg">
+              <a href={`/tags#${tag.slug}`} class="transition-colors hover:text-fg">
                 {tag.name}
               </a>
             </>

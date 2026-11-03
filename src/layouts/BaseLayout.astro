@@ -20,7 +20,7 @@ const {
 } = Astro.props;
 
 const pageTitle = title ? `${title} · ${site.title}` : site.title;
-const canonical = new URL(Astro.url.pathname, site.homeUrl).toString();
+const canonical = new URL(Astro.url.pathname.replace(/\.html$/, ''), site.homeUrl).toString();
 ---
 
 <!doctype html>

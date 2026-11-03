@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "node scripts/preview.mjs",
     "check": "astro check",
     "test": "vitest run",
     "backup": "node scripts/backup.mjs"

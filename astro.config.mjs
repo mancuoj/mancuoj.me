@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: 'https://mancuoj.me',
+  build: { format: 'file' },
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],

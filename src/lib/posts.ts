@@ -60,7 +60,7 @@ async function loadPosts(): Promise<Post[]> {
         updated: localDate(issue.updated_at, site.timezone),
         date: isoDate(created),
         year: yearOf(created),
-        url: `/post/${issue.number}/`,
+        url: `/post/${issue.number}`,
         source: issue.html_url,
         pinned:
           pinned.has(issue.number) ||

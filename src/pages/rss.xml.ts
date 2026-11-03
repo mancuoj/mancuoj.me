@@ -9,6 +9,7 @@ export async function GET(context: APIContext) {
     title: site.title,
     description: site.description,
     site: context.site ?? site.homeUrl,
+    trailingSlash: false,
     customData: `<language>${site.lang}</language>`,
     items: posts.map((post) => ({
       title: post.title,

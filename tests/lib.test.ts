@@ -16,7 +16,7 @@ function post(number: number, year = '2026', tags: Tag[] = []): Post {
     updated: created,
     date: isoDate(created),
     year,
-    url: `/post/${number}/`,
+    url: `/post/${number}`,
     source: '',
     pinned: false,
     tags,
