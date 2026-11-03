@@ -3,9 +3,9 @@
     "number": 10,
     "title": "十一月记",
     "date": "2026-11-01",
-    "updated": "2026-11-03",
+    "updated": "2026-11-04",
     "tags": [
-      "notes"
+      "LOG"
     ],
     "source": "https://github.com/mancuoj/mancuoj.me/issues/10"
   },
@@ -13,9 +13,9 @@
     "number": 7,
     "title": "十月记",
     "date": "2026-10-05",
-    "updated": "2026-11-03",
+    "updated": "2026-11-04",
     "tags": [
-      "notes"
+      "LOG"
     ],
     "source": "https://github.com/mancuoj/mancuoj.me/issues/7"
   },
@@ -23,9 +23,9 @@
     "number": 6,
     "title": "九月记",
     "date": "2026-09-02",
-    "updated": "2026-10-06",
+    "updated": "2026-11-04",
     "tags": [
-      "notes"
+      "LOG"
     ],
     "source": "https://github.com/mancuoj/mancuoj.me/issues/6"
   },
@@ -33,9 +33,9 @@
     "number": 5,
     "title": "八月记",
     "date": "2026-08-02",
-    "updated": "2026-11-03",
+    "updated": "2026-11-04",
     "tags": [
-      "notes"
+      "LOG"
     ],
     "source": "https://github.com/mancuoj/mancuoj.me/issues/5"
   },
@@ -43,9 +43,9 @@
     "number": 4,
     "title": "七月记",
     "date": "2026-07-01",
-    "updated": "2026-11-03",
+    "updated": "2026-11-04",
     "tags": [
-      "notes"
+      "LOG"
     ],
     "source": "https://github.com/mancuoj/mancuoj.me/issues/4"
   },
@@ -53,9 +53,9 @@
     "number": 3,
     "title": "六月记",
     "date": "2026-06-10",
-    "updated": "2026-11-03",
+    "updated": "2026-11-04",
     "tags": [
-      "notes"
+      "LOG"
     ],
     "source": "https://github.com/mancuoj/mancuoj.me/issues/3"
   },
@@ -65,7 +65,7 @@
     "date": "2026-06-10",
     "updated": "2026-11-03",
     "tags": [
-      "csdiy"
+      "CS"
     ],
     "source": "https://github.com/mancuoj/mancuoj.me/issues/2"
   }
