@@ -4,12 +4,10 @@ import FooterIcons from '../components/FooterIcons.astro';
 ---
 
 <BaseLayout title="404">
-  <div class="flex min-h-[calc(100dvh-200px)] flex-col">
-    <div class="flex flex-1 items-center justify-center">
-      <p class="text-[clamp(96px,22vw,180px)] font-semibold leading-none tracking-[-0.06em] text-fg">
-        404
-      </p>
-    </div>
-    <FooterIcons />
+  <div class="flex flex-col items-center py-16 sm:py-24">
+    <p class="text-[clamp(88px,20vw,152px)] font-semibold leading-none tracking-[-0.06em] text-fg">
+      404
+    </p>
   </div>
+  <FooterIcons />
 </BaseLayout>
