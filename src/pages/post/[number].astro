@@ -36,7 +36,7 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
   <article class="relative">
     <a
       href="/"
-      class="mb-8 inline-flex items-center gap-1.5 whitespace-nowrap text-muted transition-colors hover:text-fg lg:absolute lg:top-0 lg:right-full lg:mb-0 lg:mr-16"
+      class="post-back mb-8 inline-flex items-center gap-1.5 whitespace-nowrap text-muted transition-colors hover:text-fg lg:absolute lg:top-0 lg:right-full lg:mb-0 lg:mr-16"
     >
       <svg
         viewBox="0 0 24 24"
@@ -81,7 +81,7 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
           aria-label="文章导航"
         >
           {previous && (
-            <a href={previous.url} class="flex flex-col gap-1">
+            <a href={previous.url} class="post-nav-link flex flex-col gap-1">
               <span class="text-sm text-muted">Previous</span>
               <span class="text-base leading-[1.75] text-fg transition-colors hover:text-muted">
                 {previous.title}
@@ -91,7 +91,7 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
           {nextPost && (
             <a
               href={nextPost.url}
-              class="flex flex-col gap-1 sm:col-start-2 sm:items-end sm:text-right"
+              class="post-nav-link flex flex-col gap-1 sm:col-start-2 sm:items-end sm:text-right"
             >
               <span class="text-sm text-muted">Next</span>
               <span class="text-base leading-[1.75] text-fg transition-colors hover:text-muted">

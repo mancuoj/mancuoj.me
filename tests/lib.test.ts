@@ -49,7 +49,7 @@ describe('plainExcerpt', () => {
 describe('dates', () => {
   const date = new Date(Date.UTC(2026, 10, 1));
   it('formats list, full and iso dates', () => {
-    expect(listDate(date)).toBe('11 月 1 日');
+    expect(listDate(date)).toBe('11/01');
     expect(fullDate(date)).toBe('2026 年 11 月 1 日');
     expect(isoDate(date)).toBe('2026-11-01');
   });

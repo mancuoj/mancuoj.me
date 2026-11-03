@@ -1,6 +1,8 @@
 /** Dates are stored as a shifted Date whose UTC fields are the site's local date. */
 export function listDate(date: Date): string {
-  return `${date.getUTCMonth() + 1} 月 ${date.getUTCDate()} 日`;
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  return `${month}/${day}`;
 }
 
 export function fullDate(date: Date): string {

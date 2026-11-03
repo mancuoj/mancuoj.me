@@ -1,10 +1,26 @@
 import { createMarkdownProcessor } from '@astrojs/markdown-remark';
+import remarkLinkify from 'remark-linkify-regex';
+import { visit } from 'unist-util-visit';
+
+function rehypeAbsoluteLinks() {
+  return (tree: any) => {
+    visit(tree, 'element', (node: any) => {
+      if (node.tagName !== 'a' || !node.properties?.href) return;
+      const href = String(node.properties.href);
+      if (!/^(https?:|mailto:|#|\/)/i.test(href)) {
+        node.properties.href = `https://${href}`;
+      }
+    });
+  };
+}
 
 let renderer: Awaited<ReturnType<typeof createMarkdownProcessor>> | undefined;
 let pending: Promise<Awaited<ReturnType<typeof createMarkdownProcessor>>> | undefined;
 
 function getRenderer() {
   pending ??= createMarkdownProcessor({
+    remarkPlugins: [remarkLinkify(/(?:https?:\/\/|www\.)[^\s<]+|(?:[a-z0-9-]+\.)+[a-z]{2,}(?:\/[^\s<]*)?/gi)],
+    rehypePlugins: [rehypeAbsoluteLinks],
     shikiConfig: {
       themes: { light: 'github-light', dark: 'github-dark' },
       wrap: true,

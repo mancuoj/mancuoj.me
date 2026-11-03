@@ -43,6 +43,24 @@
     monospace;
 }
 
+.post-link:any-link,
+.post-nav-link:any-link,
+.post-back:any-link {
+  text-decoration: none;
+}
+
+.prose a:any-link {
+  text-decoration: underline;
+  text-decoration-color: var(--faint);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.prose a:any-link:hover {
+  color: var(--muted);
+  text-decoration-color: currentColor;
+}
+
 @layer base {
   *,
   *::before,
