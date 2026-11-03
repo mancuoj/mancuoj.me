@@ -67,10 +67,10 @@ describe('tagsIndex', () => {
   it('sorts by count then name', () => {
     const posts = [
       post(1, '2026', [
-        { name: 'b', slug: 'b' },
-        { name: 'a', slug: 'a' },
+        { name: 'b', slug: 'b', color: '999999' },
+        { name: 'a', slug: 'a', color: '999999' },
       ]),
-      post(2, '2026', [{ name: 'a', slug: 'a' }]),
+      post(2, '2026', [{ name: 'a', slug: 'a', color: '999999' }]),
     ];
     expect(tagsIndex(posts).map((tag) => tag.slug)).toEqual(['a', 'b']);
   });

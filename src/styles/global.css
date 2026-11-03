@@ -267,6 +267,31 @@
   text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 11px;
+  border: 1px solid color-mix(in srgb, var(--tag, var(--fg)) 24%, transparent);
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--tag, var(--fg)) 12%, transparent);
+  color: var(--muted);
+  line-height: 1.5;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.tag-pill:hover {
+  color: var(--fg);
+}
+
+.tag-pill[aria-pressed="true"] {
+  border-color: transparent;
+  background: var(--tag, var(--fg));
+  color: var(--tag-fg, var(--bg));
+}
+
 .theme-sun {
   display: none;
 }

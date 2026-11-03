@@ -7,6 +7,7 @@ import { isoDate, localDate, yearOf } from './dates';
 export interface Tag {
   name: string;
   slug: string;
+  color: string;
 }
 
 export interface Post {
@@ -65,9 +66,13 @@ async function loadPosts(): Promise<Post[]> {
         pinned:
           pinned.has(issue.number) ||
           (Boolean(site.pinLabel) && names.includes(site.pinLabel as string)),
-        tags: names
-          .filter((name) => !excluded.has(name))
-          .map((name) => ({ name, slug: slugify(name) })),
+        tags: issue.labels
+          .filter((label) => !excluded.has(label.name))
+          .map((label) => ({
+            name: label.name,
+            slug: slugify(label.name),
+            color: label.color || '999999',
+          })),
       };
     }),
   );
