@@ -40,7 +40,7 @@ function textOn(hex: string): string {
     }
   </div>
 
-  <ol class="mt-4" id="tagged-posts">
+  <ol class="mt-6" id="tagged-posts">
     {
       posts.map((post) => (
         <li class="post-item" data-tags={post.tags.map((tag) => tag.slug).join(' ')}>
