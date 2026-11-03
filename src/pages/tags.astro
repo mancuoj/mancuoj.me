@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import FooterIcons from '../components/FooterIcons.astro';
 import { getPosts, tagsIndex } from '../lib/posts';
 import { listDate } from '../lib/dates';
 
@@ -10,7 +11,7 @@ const tags = tagsIndex(posts);
 <BaseLayout title="标签">
   <h1 class="sr-only">标签</h1>
 
-  <div class="mt-20 flex flex-wrap items-baseline gap-2 text-sm sm:mt-24" id="tag-filter" role="group" aria-label="按标签筛选">
+  <div class="mt-12 flex flex-wrap items-baseline gap-2 text-sm sm:mt-16" id="tag-filter" role="group" aria-label="按标签筛选">
     <button class="text-fg" type="button" data-tag="*" aria-pressed="true">All</button>
     {
       tags.map((tag) => (
@@ -40,6 +41,8 @@ const tags = tagsIndex(posts);
       ))
     }
   </ol>
+
+  <FooterIcons />
 </BaseLayout>
 
 <script>

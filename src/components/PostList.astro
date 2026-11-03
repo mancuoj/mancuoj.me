@@ -9,19 +9,19 @@ interface Props {
 const { groups } = Astro.props;
 ---
 
-<section class="mt-16 space-y-10" aria-label="文章">
+<section class="mt-10 space-y-8" aria-label="文章">
   {
     groups.map((group) => (
-      <section class="grid gap-3 sm:grid-cols-[7rem_minmax(0,1fr)] sm:gap-6">
-        <h2 class="text-sm text-muted tabular-nums sm:sticky sm:top-4 sm:self-start sm:leading-7">
+      <section>
+        <h2 class="border-b border-line pb-2 text-xs tracking-[0.08em] text-muted tabular-nums">
           {group.year}
         </h2>
-        <ol class="min-w-0">
+        <ol class="mt-1">
           {group.posts.map((post) => (
             <li>
               <a
                 href={post.url}
-                class="group flex items-baseline justify-between gap-6 py-1 leading-6"
+                class="group flex items-baseline justify-between gap-6 py-2.5 leading-6"
               >
                 <span class="text-[15px] text-fg transition-colors group-hover:text-muted">
                   {post.title}

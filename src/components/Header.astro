@@ -2,18 +2,18 @@
 import { site } from '../lib/site';
 ---
 
-<header class="flex items-center justify-between text-sm">
-  <a href="/" class="group flex items-center gap-2.5 font-medium">
+<header class="flex items-center justify-between">
+  <a href="/" class="group flex items-center gap-2.5">
     <img
       src={site.avatar}
       alt=""
-      width="24"
-      height="24"
-      class="size-6 rounded-full grayscale transition duration-300 group-hover:grayscale-0"
+      width="32"
+      height="32"
+      class="size-8 rounded-full grayscale transition duration-300 group-hover:grayscale-0"
     />
-    <span class="uppercase">{site.title}</span>
+    <span class="text-[15px] font-medium">{site.title}</span>
   </a>
-  <nav class="flex items-center gap-5 text-muted" aria-label="主导航">
+  <nav class="flex items-center gap-5 text-sm text-muted" aria-label="主导航">
     <a href="/tags/" class="transition-colors hover:text-fg">标签</a>
   </nav>
 </header>
