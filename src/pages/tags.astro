@@ -23,12 +23,12 @@ function textOn(hex: string): string {
 <BaseLayout title="标签">
   <h1 class="sr-only">标签</h1>
 
-  <div class="mt-12 flex flex-wrap items-center gap-1.5 text-sm sm:mt-16" id="tag-filter" role="group" aria-label="按标签筛选">
-    <button class="tag-pill" type="button" data-tag="*" aria-pressed="true">All</button>
+  <div class="mt-12 flex flex-wrap items-center gap-x-5 gap-y-2 border-b border-line pb-3 text-sm sm:mt-16" id="tag-filter" role="group" aria-label="按标签筛选">
+    <button class="tag-filter-item tag-filter-item--all" type="button" data-tag="*" aria-pressed="true">All</button>
     {
       tags.map((tag) => (
         <button
-          class="tag-pill"
+          class="tag-filter-item"
           type="button"
           data-tag={tag.slug}
           aria-pressed="false"
@@ -40,7 +40,7 @@ function textOn(hex: string): string {
     }
   </div>
 
-  <ol class="mt-5" id="tagged-posts">
+  <ol class="mt-4" id="tagged-posts">
     {
       posts.map((post) => (
         <li class="post-item" data-tags={post.tags.map((tag) => tag.slug).join(' ')}>

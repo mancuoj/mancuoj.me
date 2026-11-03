@@ -267,29 +267,34 @@
   text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 
-.tag-pill {
+.tag-filter-item {
   display: inline-flex;
   align-items: center;
-  padding: 3px 11px;
-  border: 1px solid color-mix(in srgb, var(--tag, var(--fg)) 24%, transparent);
-  border-radius: 9999px;
-  background: color-mix(in srgb, var(--tag, var(--fg)) 12%, transparent);
+  gap: 6px;
   color: var(--muted);
-  line-height: 1.5;
-  transition:
-    color 0.15s ease,
-    background-color 0.15s ease,
-    border-color 0.15s ease;
+  transition: color 0.15s ease;
 }
 
-.tag-pill:hover {
+.tag-filter-item::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--tag, var(--muted));
+  opacity: 0.45;
+}
+
+.tag-filter-item--all::before {
+  display: none;
+}
+
+.tag-filter-item:hover,
+.tag-filter-item[aria-pressed="true"] {
   color: var(--fg);
 }
 
-.tag-pill[aria-pressed="true"] {
-  border-color: transparent;
-  background: var(--tag, var(--fg));
-  color: var(--tag-fg, var(--bg));
+.tag-filter-item[aria-pressed="true"]::before {
+  opacity: 1;
 }
 
 .theme-sun {
