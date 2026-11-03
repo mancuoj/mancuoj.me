@@ -1,24 +1,36 @@
 {% extends "base.html" %}
 
+{% from "icon.html" import icon %}
+
 {% block content %}
-<section class="section">
-  <span class="label">Writing</span>
+<section class="post-years">
   {% for group in groups %}
-  <ol class="post-list">
-    {% for post in group.posts %}
-    <li>
-      <a class="post-row" href="{{ post.url }}">
-        <span class="post-year">{% if loop.first %}{{ group.year }}{% endif %}</span>
-        <span class="title">{{ post.title }}{% if post.pinned %}<span class="pin" title="置顶">✳</span>{% endif %}</span>
-      </a>
-    </li>
-    {% endfor %}
-  </ol>
+  <section class="post-year">
+    <h2>{{ group.year }}</h2>
+    <ol class="post-list">
+      {% for post in group.posts %}
+      <li>
+        <div class="post-row">
+          <a class="post-link" href="{{ post.url }}">{{ post.title }}{% if post.pinned %}<span class="pin" title="置顶">✳</span>{% endif %}</a><time class="post-date" datetime="{{ post.date }}">{{ post.created.strftime('%b') }} {{ post.created.day }}</time>
+        </div>
+      </li>
+      {% endfor %}
+    </ol>
+  </section>
   {% endfor %}
 </section>
 
-<section class="section">
-  <span class="label">Elsewhere</span>
-  <p class="links"><a href="{{ base }}/tags">Tags</a>{% for item in cfg.social %} · <a href="{{ item.url }}"{% if item.url.startswith('http') %} target="_blank" rel="noopener"{% endif %}>{{ item.label }}</a>{% endfor %}{% if cfg.showRss %} · <a href="{{ base }}/rss.xml" target="_blank" rel="noopener">RSS</a>{% endif %} · <button id="theme-switch" type="button">Dark</button></p>
-</section>
+<footer class="site-footer">
+  <nav class="icon-links" aria-label="链接">
+    {% for item in cfg.social if item.icon != 'rss' or cfg.showRss %}
+    {% set external = item.url.startswith('http') %}
+    <a class="icon-link icon-{{ item.icon }}" href="{% if external or item.url.startswith('mailto:') %}{{ item.url }}{% else %}{{ base }}{{ item.url }}{% endif %}" aria-label="{{ item.label }}" title="{{ item.label }}"{% if external %} target="_blank" rel="noopener"{% endif %}>{{ icon(item.icon) }}</a>
+    {% endfor %}
+    <button class="icon-link icon-theme" id="theme-switch" type="button" aria-label="切换主题" title="切换主题">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0-8 0"/><path d="M3 12h1m8-9v1m8 8h1m-9 8v1m-6.4-15.4l.7.7m12.1-.7l-.7.7m0 11.4l.7.7m-12.1-.7l-.7.7"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1-8.313-12.454l0 .008"/></svg>
+      <span class="sr-only">Dark</span>
+    </button>
+  </nav>
+</footer>
 {% endblock %}

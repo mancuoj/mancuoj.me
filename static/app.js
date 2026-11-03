@@ -7,11 +7,15 @@
     return root.getAttribute("data-theme") || "light";
   }
 
-  /* --- 主题切换（只在主页 Elsewhere 的文字按钮） ------------------------ */
+  /* --- 主题切换（页脚图标按钮） ---------------------------------------- */
   var switcher = document.getElementById("theme-switch");
   if (switcher) {
     var syncLabel = function () {
-      switcher.textContent = currentTheme() === "dark" ? "Light" : "Dark";
+      var text = currentTheme() === "dark" ? "切换到浅色" : "切换到深色";
+      var sr = switcher.querySelector(".sr-only");
+      if (sr) sr.textContent = text;
+      switcher.setAttribute("aria-label", text);
+      switcher.setAttribute("title", text);
     };
     syncLabel();
     switcher.addEventListener("click", function () {

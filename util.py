@@ -24,8 +24,6 @@ def slugify(text: str) -> str:
 
 def plain_excerpt(md_text: str, limit: int = 160) -> str:
     """从 Markdown 正文里取第一段纯文本做摘要。"""
-    if not md_text:
-        return ""
     text = re.sub(r"```.*?```", "", md_text, flags=re.S)
     text = re.sub(r"`[^`]*`", "", text)
     text = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", text)

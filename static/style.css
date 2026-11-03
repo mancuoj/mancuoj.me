@@ -1,41 +1,59 @@
 /* ==========================================================================
    Mancouj · 大字标识 + 小字正文（阅读向）
    字体（Open Runde / Syne / 霞鹜文楷屏幕阅读版）由构建时裁剪，见 docs/static/fonts.css
-   改个人主色：只需改下面的 --accent
+   配色：直接使用 egoist.dev 的 token（src/css/tailwind.css），无额外强调色
+   来源 https://github.com/egoist/website
    ========================================================================== */
 
 :root {
-  --cjk: "LXGW WenKai Screen";
-  --sans: "Open Runde", var(--cjk), -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-  --display: "Syne", var(--cjk), sans-serif;
+  --sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans",
+    "PingFang SC", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
-  --bg: #f7f7f5;
-  --fg: #1a1a18;
-  --body: #33312c;
-  --muted: #6f6d67;
-  --faint: #a6a49e;
-  --hair: #e7e6e2;
-  --hover: #ececea;
-  --accent: #e0361c;
-  --code-bg: #efeeeb;
-  --select: #e6e2d9;
+  /* egoist light: bg fg muted faint line subtle card */
+  --bg: #fafaf9;
+  --fg: #1c1c1a;
+  --muted: #80807a;
+  --faint: #b0b0aa;
+  --hair: #e9e9e6;
+  --surface: #ffffff;
+  --hover: #f3f3f1;
+  --body: #333330;
+  --accent: var(--fg);
+  --code-bg: #f3f3f1;
+  --select: color-mix(in srgb, var(--fg) 12%, transparent);
+  --syn-key: #cf222e;
+  --syn-str: #0a3069;
+  --syn-num: #0550ae;
+  --syn-fn: #8250df;
+  --syn-tag: #953800;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  color-scheme: light;
 
-  --measure: 652px;
+  --measure: 36rem;
 }
 
 [data-theme="dark"] {
-  --bg: #0b0b09;
-  --fg: #ededed;
-  --body: #c6c4be;
-  --muted: #9b9a95;
-  --faint: #66655f;
-  --hair: #232320;
-  --hover: #191918;
-  --accent: #ff3b2f;
-  --code-bg: #191918;
-  --select: #2f2d29;
+  /* egoist dark */
+  --bg: #111110;
+  --fg: #ececea;
+  --muted: #8c8c86;
+  --faint: #5c5c58;
+  --hair: #262624;
+  --surface: #171716;
+  --hover: #1c1c1b;
+  --body: #d5d5d3;
+  --accent: var(--fg);
+  --code-bg: #1c1c1b;
+  --select: color-mix(in srgb, var(--fg) 12%, transparent);
+  --syn-key: #ff7b72;
+  --syn-str: #a5d6ff;
+  --syn-num: #79c0ff;
+  --syn-fn: #d2a8ff;
+  --syn-tag: #ffa657;
+  color-scheme: dark;
 }
 
 *,
@@ -73,96 +91,165 @@ a {
   color: var(--fg);
 }
 
-/* --- 页头：大字标识 + 小字导航 ------------------------------------------- */
+/* --- 页头：小头像 + 标识 / 导航 / 下方 slogan ----------------------------- */
 .site-header {
-  max-width: var(--measure);
+  width: min(var(--measure), calc(100% - 40px));
   margin: 0 auto;
-  padding: clamp(40px, 7vw, 96px) 24px 0;
-  margin-bottom: clamp(30px, 5vw, 48px);
+  padding-top: 40px;
+}
+
+@media (min-width: 40rem) {
+  .site-header {
+    padding-top: 64px;
+  }
+}
+
+.site-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.site-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  flex: none;
+  filter: grayscale(1);
+  transition: filter 0.3s ease;
+}
+
+.site-home:hover .avatar {
+  filter: none;
 }
 
 .brand {
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 1.32rem;
-  line-height: 1.3;
-  letter-spacing: -0.025em;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
-.brand i {
-  color: var(--accent);
-  font-style: normal;
+.site-nav {
+  display: flex;
+  gap: 20px;
+  font-size: 0.875rem;
+  line-height: 20px;
+  color: var(--muted);
 }
 
-.tagline {
-  margin-top: 5px;
-  color: var(--muted);
-  font-size: 0.72rem;
-  letter-spacing: 0.01em;
+.site-nav a {
+  transition: color 0.15s ease;
+}
+
+.site-nav a:hover {
+  color: var(--fg);
+}
+
+.intro {
+  max-width: 28rem;
+  margin: 80px 0 0;
+  color: var(--body);
+  font-size: 15px;
+  line-height: 1.625;
+  letter-spacing: 0;
+  text-wrap: pretty;
+}
+
+@media (min-width: 40rem) {
+  .intro {
+    margin-top: 96px;
+  }
 }
 
 /* --- 主体 ---------------------------------------------------------------- */
 .site-main {
-  max-width: var(--measure);
+  display: flow-root;
+  width: min(var(--measure), calc(100% - 40px));
   margin: 0 auto;
-  padding: 0 24px clamp(56px, 8vw, 84px);
+  padding-bottom: 2rem;
 }
 
-.section {
-  margin-top: clamp(36px, 6vw, 54px);
+/* --- 列表：年份列 + 标题 + 日期 ----------------------------------------- */
+.post-years {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 64px;
 }
 
-.section:first-child {
-  margin-top: 0;
+.post-year {
+  display: grid;
+  gap: 12px;
 }
 
-.label {
-  display: block;
-  margin-bottom: 10px;
-  font-size: 0.78rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
+.post-year h2 {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
 }
 
-/* --- 列表 ---------------------------------------------------------------- */
 .post-list {
   margin: 0;
   padding: 0;
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
 }
 
 .post-row {
   display: flex;
   align-items: baseline;
-  gap: 14px;
-  padding: 7px 0;
-  transition: opacity 120ms var(--ease-out);
+  justify-content: space-between;
+  gap: 24px;
+  padding: 4px 0;
 }
 
-.post-row:active {
+.post-link {
+  font-size: 15px;
+  line-height: 1.6;
+  transition: color 0.15s ease;
+}
+
+.post-link:hover {
+  color: var(--muted);
+}
+
+.post-link:active {
   opacity: 0.6;
 }
 
-.post-row .title {
-  font-size: 0.88rem;
-  line-height: 1.45;
-  transition: color 0.16s ease;
+.post-date {
+  flex-shrink: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--faint);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
-.post-row:hover .title {
-  color: var(--accent);
-}
+@media (min-width: 40rem) {
+  .post-year {
+    grid-template-columns: 7rem minmax(0, 1fr);
+    gap: 24px;
+  }
 
-.post-year {
-  flex: 0 0 2.6rem;
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.02em;
-  color: var(--muted);
+  .post-year h2 {
+    position: sticky;
+    top: 1rem;
+    align-self: start;
+    line-height: 1.75;
+  }
 }
 
 .pin {
@@ -172,9 +259,63 @@ a {
   vertical-align: 0.12em;
 }
 
-/* --- 链接：muted + faint 下划线, hover 朱红（全站统一）------------------- */
-.links a,
-.links button,
+/* --- 页脚：图标链接 ------------------------------------------------------ */
+.site-footer {
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+}
+
+.icon-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 18px;
+}
+
+.icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.15s ease, opacity 0.12s ease;
+}
+
+.icon-link svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+/* 浅色显示月亮（切到深色），深色显示太阳（切回浅色） */
+.icon-link .icon-sun {
+  display: none;
+}
+
+.icon-link .icon-moon {
+  display: block;
+}
+
+[data-theme="dark"] .icon-sun {
+  display: block;
+}
+
+[data-theme="dark"] .icon-moon {
+  display: none;
+}
+
+.icon-link:hover {
+  color: var(--fg);
+}
+
+.icon-link:active {
+  opacity: 0.6;
+}
+
+/* --- 链接：muted + faint 下划线, hover 变浅（全站统一）-------------------- */
 .markdown-body a,
 .notfound-back,
 .chip {
@@ -185,8 +326,6 @@ a {
   transition: color 0.16s ease, text-decoration-color 0.16s ease, opacity 120ms var(--ease-out);
 }
 
-.links a:hover,
-.links button:hover,
 .markdown-body a:hover,
 .notfound-back:hover,
 .chip:hover {
@@ -194,93 +333,128 @@ a {
   text-decoration-color: var(--accent);
 }
 
-/* --- 别处 / 链接 --------------------------------------------------------- */
-.links {
-  color: var(--muted);
-  font-size: 0.8rem;
-}
-
-.links button {
-  padding: 0;
-  border: 0;
-  background: none;
-  font: inherit;
-  color: inherit;
-  cursor: pointer;
-}
-
-.links button:active {
-  opacity: 0.6;
-}
-
 /* --- 文章页 -------------------------------------------------------------- */
 .post {
+  position: relative;
   max-width: var(--measure);
+  margin-top: 3.5rem;
+}
+
+/* 宽屏时返回键留在正文左侧的空白里，窄屏时放在标题上方 */
+.post-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-bottom: 2rem;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.post-back:hover {
+  color: var(--fg);
+}
+
+.post-back svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+@media (min-width: 64rem) {
+  .post-back {
+    position: absolute;
+    top: 0;
+    right: 100%;
+    margin: 0 4rem 0 0;
+  }
 }
 
 .post-header {
-  margin-bottom: clamp(24px, 4vw, 34px);
+  margin-bottom: 2rem;
 }
 
 .post-title {
-  font-size: 1.14rem;
-  font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: 0.01em;
-  margin-bottom: 9px;
-}
-
-/* 标题旁的回 issue 图标 */
-.post-source {
-  display: inline-flex;
-  vertical-align: -0.1em;
-  margin-left: 0.42em;
-  color: var(--faint);
-  transition: color 0.16s ease;
-}
-
-.post-source:hover {
-  color: var(--accent);
-}
-
-.post-source svg {
-  display: block;
-  width: 0.85em;
-  height: 0.85em;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.75;
+  letter-spacing: 0;
+  margin-bottom: 0;
 }
 
 .post-meta {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.5rem;
-  font-family: var(--mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.04em;
+  gap: 0.4rem;
+  font-size: 1rem;
+  line-height: 1.75;
+  letter-spacing: 0;
   color: var(--muted);
 }
 
 .post-meta .dot {
-  opacity: 0.7;
+  color: var(--faint);
 }
 
 .post-meta .tag {
-  font-family: var(--sans);
-  font-size: 0.7rem;
-  letter-spacing: 0;
   color: var(--muted);
-  transition: color 0.16s ease;
+  transition: color 0.15s ease;
 }
 
 .post-meta .tag:hover {
-  color: var(--accent);
+  color: var(--fg);
+}
+
+/* --- 上一篇 / 下一篇 ------------------------------------------------------ */
+.post-nav {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--hair);
+}
+
+@media (min-width: 40rem) {
+  .post-nav {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .post-nav__item--next {
+    grid-column: 2;
+    align-items: flex-end;
+    text-align: right;
+  }
+}
+
+.post-nav__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.post-nav__label {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.post-nav__title {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--fg);
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  transition: color 0.15s ease;
+}
+
+.post-nav__item:hover .post-nav__title {
+  color: var(--muted);
 }
 
 /* --- 正文排版 ------------------------------------------------------------ */
 .markdown-body {
-  font-size: 0.88rem;
-  line-height: 1.65;
-  letter-spacing: 0.004em;
+  font-size: 1rem;
+  line-height: 1.75;
+  letter-spacing: 0;
   color: var(--body);
   word-wrap: break-word;
 }
@@ -294,7 +468,7 @@ a {
 }
 
 .markdown-body p {
-  margin-bottom: 12px;
+  margin: 1em 0;
 }
 
 .markdown-body h1,
@@ -302,39 +476,30 @@ a {
 .markdown-body h3,
 .markdown-body h4 {
   color: var(--fg);
-  line-height: 1.45;
-  margin: 34px 0 12px;
+  font-size: 1em;
+  font-weight: 500;
+  line-height: 1.35;
+  margin: 2.2em 0 0.6em;
 }
 
-.markdown-body h1 {
-  font-size: 1.02rem;
-  font-weight: 500;
-}
-
-.markdown-body h2 {
-  font-size: 0.98rem;
-  font-weight: 500;
-}
-
-.markdown-body h3,
-.markdown-body h4 {
-  font-size: 0.95rem;
-  font-weight: 500;
+.markdown-body h1:first-child {
+  margin-top: 0;
 }
 
 .markdown-body strong {
-  font-weight: 400;
+  font-weight: 700;
   color: var(--fg);
 }
 
 .markdown-body ul,
 .markdown-body ol {
-  margin-bottom: 21px;
+  margin: 1em 0;
   padding-left: 1.5em;
 }
 
 .markdown-body li {
-  margin: 0.3em 0;
+  margin: 0.45em 0;
+  padding-left: 0.15em;
 }
 
 .markdown-body li::marker {
@@ -342,14 +507,18 @@ a {
 }
 
 .markdown-body blockquote {
-  margin: 22px 0;
-  padding-left: 17px;
+  margin: 1em 0;
+  padding: 0 0 0 1.1em;
   border-left: 2px solid var(--hair);
   color: var(--muted);
 }
 
+.markdown-body blockquote p {
+  margin: 0.35em 0;
+}
+
 .markdown-body hr {
-  margin: 36px 0;
+  margin: 2.5em 0;
   border: 0;
   border-top: 1px solid var(--hair);
 }
@@ -357,49 +526,59 @@ a {
 .markdown-body img {
   max-width: 100%;
   height: auto;
-  border-radius: 4px;
+  margin: 1.6em 0;
+  border-radius: 0.625rem;
 }
 
 .markdown-body code {
-  padding: 0.12em 0.4em;
-  border-radius: 3px;
+  padding: 0.1em 0.35em;
+  border: 1px solid var(--hair);
+  border-radius: 0.3em;
   background: var(--code-bg);
   font-family: var(--mono);
-  font-size: 0.84em;
+  font-size: 0.875em;
   color: var(--fg);
 }
 
 .markdown-body pre {
-  margin: 22px 0;
-  padding: 14px 16px;
+  margin: 1.6em 0;
+  padding: 1em 1.15em;
   overflow-x: auto;
   border: 1px solid var(--hair);
-  border-radius: 4px;
+  border-radius: 0.625rem;
   background: var(--code-bg);
-  line-height: 1.7;
+  line-height: 1.65;
   -webkit-overflow-scrolling: touch;
 }
 
 .markdown-body pre code {
   padding: 0;
+  border: 0;
   background: none;
-  font-size: 0.82rem;
+  font-size: 0.875em;
 }
 
 .markdown-body table {
   display: block;
-  width: max-content;
+  width: fit-content;
   max-width: 100%;
-  margin: 22px 0;
+  margin: 1.25em 0;
   overflow-x: auto;
-  border-collapse: collapse;
-  font-size: 0.88rem;
+  border: 1px solid var(--hair);
+  border-radius: 0.625rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 1rem;
 }
 
 .markdown-body th,
 .markdown-body td {
-  padding: 0.4em 0.8em;
-  border: 1px solid var(--hair);
+  padding: 0.55em 0.75em;
+  border: 0;
+  border-bottom: 1px solid var(--hair);
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
 }
 
 .markdown-body th {
@@ -408,14 +587,18 @@ a {
   color: var(--fg);
 }
 
+.markdown-body tbody tr:last-child td {
+  border-bottom: 0;
+}
+
 .markdown-body kbd {
-  padding: 0.12em 0.42em;
+  padding: 0.1em 0.35em;
   border: 1px solid var(--hair);
   border-bottom-width: 2px;
-  border-radius: 4px;
+  border-radius: 0.3em;
   background: var(--hover);
   font-family: var(--mono);
-  font-size: 0.8em;
+  font-size: 0.875em;
 }
 
 .markdown-body .task-list-item {
@@ -429,7 +612,7 @@ a {
 
 /* 代码语法高亮（Pygments 短 class 名）*/
 .markdown-body .highlight {
-  margin: 22px 0;
+  margin: 1.6em 0;
 }
 
 .markdown-body .highlight pre {
@@ -439,7 +622,7 @@ a {
 .markdown-body code .c,
 .markdown-body code .c1,
 .markdown-body code .cm {
-  color: #6b7280;
+  color: var(--muted);
   font-style: italic;
 }
 
@@ -447,63 +630,34 @@ a {
 .markdown-body code .kd,
 .markdown-body code .kn,
 .markdown-body code .kc {
-  color: #cf222e;
+  color: var(--syn-key);
 }
 
 .markdown-body code .s,
 .markdown-body code .s1,
 .markdown-body code .s2,
 .markdown-body code .sb {
-  color: #0a3069;
+  color: var(--syn-str);
 }
 
 .markdown-body code .m,
 .markdown-body code .mi,
 .markdown-body code .mf {
-  color: #0550ae;
+  color: var(--syn-num);
 }
 
 .markdown-body code .nf,
 .markdown-body code .na {
-  color: #8250df;
+  color: var(--syn-fn);
 }
 
 .markdown-body code .nt {
-  color: #953800;
+  color: var(--syn-tag);
 }
 
 .markdown-body code .o,
 .markdown-body code .p {
   color: var(--muted);
-}
-
-[data-theme="dark"] .markdown-body code .k,
-[data-theme="dark"] .markdown-body code .kd,
-[data-theme="dark"] .markdown-body code .kn,
-[data-theme="dark"] .markdown-body code .kc {
-  color: #ff7b72;
-}
-
-[data-theme="dark"] .markdown-body code .s,
-[data-theme="dark"] .markdown-body code .s1,
-[data-theme="dark"] .markdown-body code .s2,
-[data-theme="dark"] .markdown-body code .sb {
-  color: #a5d6ff;
-}
-
-[data-theme="dark"] .markdown-body code .m,
-[data-theme="dark"] .markdown-body code .mi,
-[data-theme="dark"] .markdown-body code .mf {
-  color: #79c0ff;
-}
-
-[data-theme="dark"] .markdown-body code .nf,
-[data-theme="dark"] .markdown-body code .na {
-  color: #d2a8ff;
-}
-
-[data-theme="dark"] .markdown-body code .nt {
-  color: #ffa657;
 }
 
 /* --- 404 ---------------------------------------------------------------- */

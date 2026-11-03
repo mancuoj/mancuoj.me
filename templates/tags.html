@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Tags · {{ cfg.title }}{% endblock %}
+{% block title %}标签 · {{ cfg.title }}{% endblock %}
 {% block description %}全部文章与标签{% endblock %}
 
 {% block content %}
-<h1 class="sr-only">Tags</h1>
+<h1 class="sr-only">标签</h1>
 
 <div class="tag-filter" id="tag-filter" role="group" aria-label="按标签筛选">
   <button class="chip is-active" type="button" data-tag="*" aria-pressed="true">All</button>
@@ -17,9 +17,9 @@
 <ol class="post-list" id="tagged-posts">
   {% for post in posts %}
   <li class="post-item" data-tags="{{ post.tags|map(attribute='slug')|join(' ') }}">
-    <a class="post-row" href="{{ post.url }}">
-      <span class="title">{{ post.title }}{% if post.pinned %}<span class="pin" title="置顶">✳</span>{% endif %}</span>
-    </a>
+    <div class="post-row">
+      <a class="post-link" href="{{ post.url }}">{{ post.title }}{% if post.pinned %}<span class="pin" title="置顶">✳</span>{% endif %}</a>
+    </div>
   </li>
   {% endfor %}
 </ol>

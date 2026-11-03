@@ -69,5 +69,12 @@ def build_sitemap(posts: list[Post], cfg: dict, base: str, out: Path) -> None:
 
 
 def build_robots(base: str, out: Path) -> None:
-    text = f"User-agent: *\nAllow: /\n\nSitemap: {base}/sitemap.xml\n"
+    text = (
+        "User-agent: *\n"
+        "# AI 使用偏好: 允许搜索索引, 不用于训练或实时生成\n"
+        "Content-Signal: ai-train=no, search=yes, ai-input=no\n"
+        "Allow: /\n"
+        "\n"
+        f"Sitemap: {base}/sitemap.xml\n"
+    )
     (out / "robots.txt").write_text(text, encoding="utf-8")

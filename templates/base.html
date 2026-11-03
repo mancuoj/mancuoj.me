@@ -13,8 +13,7 @@
 {% block ogmeta %}{% endblock %}
 <link rel="icon" href="{{ cfg.avatar }}">
 {% if cfg.showRss %}<link rel="alternate" type="application/rss+xml" title="{{ cfg.title }}" href="{{ base }}/rss.xml">
-{% endif %}<link rel="stylesheet" href="{{ base }}/static/fonts.css?v={{ asset_ver }}">
-<link rel="stylesheet" href="{{ base }}/static/style.css?v={{ asset_ver }}">
+{% endif %}<link rel="stylesheet" href="{{ base }}/static/style.css?v={{ asset_ver }}">
 <script>
 (function () {
   try {
@@ -28,8 +27,16 @@
 <body>
 {% block header %}
 <header class="site-header">
-  <a class="brand" href="{{ base }}/">{{ cfg.author }}<i>.</i></a>
-  <div class="tagline">{{ cfg.subtitle }}</div>
+  <div class="site-top">
+    <a class="site-home" href="{{ base }}/">
+      <img class="avatar" src="{{ cfg.avatar }}" alt="" width="24" height="24">
+      <span class="brand">{{ cfg.title }}</span>
+    </a>
+    <nav class="site-nav" aria-label="主导航">
+      <a href="{{ base }}/tags">标签</a>
+    </nav>
+  </div>
+  <p class="intro">{{ cfg.subtitle }}</p>
 </header>
 {% endblock %}
 <main class="site-main">

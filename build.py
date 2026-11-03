@@ -34,7 +34,6 @@ from urllib3.util.retry import Retry
 
 import backup
 import feeds
-from fonts import Fonts
 from models import Post, Tag, group_by_year, tags_index
 from util import ROOT, log, plain_excerpt, slugify
 
@@ -152,7 +151,6 @@ class Builder:
         self.tz = dt.timezone(dt.timedelta(hours=cfg.get("timezone", 8)))
         self.base = (base or cfg["homeUrl"]).rstrip("/")
         self.md = _local_md()
-        self.fonts = Fonts(out_dir, gh.session)
         self.exclude = set(cfg.get("excludeLabels", []))
         self.pin_label = cfg.get("pinLabel")
         self.env = Environment(
@@ -189,7 +187,7 @@ class Builder:
                     updated=self._local_time(issue["updated_at"]),
                     date=created.strftime("%Y-%m-%d"),
                     year=created.strftime("%Y"),
-                    url=f"{self.base}/post/{issue['number']}",
+                    url=f"{self.base}/post/{issue['number']}/",
                     source=issue["html_url"],
                     pinned=issue["number"] in pinned_numbers or (bool(self.pin_label) and self.pin_label in names),
                     tags=[Tag(name=n, slug=slugify(n)) for n in names if n not in self.exclude],
@@ -220,10 +218,18 @@ class Builder:
     # -- 页面 --------------------------------------------------------------- #
     def build_posts(self, posts: list[Post]) -> None:
         post_dir = self.out / "post"
-        post_dir.mkdir(parents=True, exist_ok=True)
-        for post in posts:
-            html_out = self.render("post.html", post=post)
-            (post_dir / f"{post.number}.html").write_text(html_out, encoding="utf-8")
+        for index, post in enumerate(posts):
+            target = post_dir / str(post.number) / "index.html"
+            target.parent.mkdir(parents=True, exist_ok=True)
+            previous = posts[index + 1] if index + 1 < len(posts) else None
+            next_post = posts[index - 1] if index > 0 else None
+            html_out = self.render(
+                "post.html",
+                post=post,
+                previous=previous,
+                next_post=next_post,
+            )
+            target.write_text(html_out, encoding="utf-8")
 
     def build_index(self, posts: list[Post]) -> None:
         html_out = self.render("index.html", groups=group_by_year(posts))
@@ -266,7 +272,6 @@ class Builder:
         feeds.build_sitemap(posts, self.cfg, self.base, self.out)
         feeds.build_robots(self.base, self.out)
         self.copy_static()
-        self.fonts.build()
         try:
             shown = self.out.relative_to(ROOT)
         except ValueError:

@@ -13,7 +13,10 @@
   "excludeLabels": [],
   "pinLabel": "pin",
   "social": [
-    { "label": "GitHub", "url": "https://github.com/mancuoj" },
-    { "label": "Email", "url": "mailto:mancuoj@gmail.com" }
+    { "label": "GitHub", "url": "https://github.com/mancuoj", "icon": "github" },
+    { "label": "X", "url": "https://x.com/humancuoj", "icon": "x" },
+    { "label": "RSS", "url": "/rss.xml", "icon": "rss" },
+    { "label": "Bilibili", "url": "https://space.bilibili.com/44805047", "icon": "bilibili" },
+    { "label": "Email", "url": "mailto:mancuoj@gmail.com", "icon": "mail" }
   ]
 }

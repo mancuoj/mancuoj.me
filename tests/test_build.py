@@ -73,6 +73,17 @@ def test_rss_does_not_double_escape_description(tmp_path: Path) -> None:
     assert "<![CDATA[x & y < z]]>" in xml
 
 
+def test_robots_declares_content_signals(tmp_path: Path) -> None:
+    feeds.build_robots("https://example.com", tmp_path)
+    lines = (tmp_path / "robots.txt").read_text(encoding="utf-8").splitlines()
+    assert "User-agent: *" in lines
+    assert "Content-Signal: ai-train=no, search=yes, ai-input=no" in lines
+    assert "Allow: /" in lines
+    assert "Sitemap: https://example.com/sitemap.xml" in lines
+    # Content-Signal must stay inside the wildcard group (before any blank line).
+    assert lines.index("Content-Signal: ai-train=no, search=yes, ai-input=no") < lines.index("")
+
+
 def test_backup_writes_markdown_and_index(tmp_path: Path) -> None:
     post = make_post(7, tags=[Tag("notes", "notes")])
     post.title = "十月记"
