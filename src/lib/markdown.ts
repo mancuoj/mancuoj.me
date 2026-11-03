@@ -10,6 +10,10 @@ function rehypeAbsoluteLinks() {
       if (!/^(https?:|mailto:|#|\/)/i.test(href)) {
         node.properties.href = `https://${href}`;
       }
+      const child = node.children?.length === 1 ? node.children[0] : null;
+      if (child?.type === 'text' && /^https?:\/\//i.test(child.value)) {
+        child.value = child.value.replace(/^https?:\/\//i, '');
+      }
     });
   };
 }
