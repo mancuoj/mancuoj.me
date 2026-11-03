@@ -1,10 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import FooterIcons from '../components/FooterIcons.astro';
 ---
 
 <BaseLayout title="404">
-  <h1 class="text-base font-medium">页面不存在</h1>
-  <p class="mt-2 text-muted">
-    <a href="/" class="underline decoration-line underline-offset-4 hover:text-fg">返回首页</a>
-  </p>
+  <div class="flex min-h-[calc(100dvh-200px)] flex-col">
+    <div class="flex flex-1 items-center justify-center">
+      <p class="text-[clamp(96px,22vw,180px)] font-semibold leading-none tracking-[-0.06em] text-fg">
+        404
+      </p>
+    </div>
+    <FooterIcons />
+  </div>
 </BaseLayout>
