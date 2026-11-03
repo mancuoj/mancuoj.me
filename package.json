@@ -1,0 +1,27 @@
+{
+  "name": "mancuoj-me",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "vitest run",
+    "backup": "node scripts/backup.mjs"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "^7.3.5",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "7.4.4",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@tailwindcss/vite": "4.3.3",
+    "tailwindcss": "4.3.3",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  }
+}

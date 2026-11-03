@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPosts } from '../../lib/posts';
+import { fullDate } from '../../lib/dates';
+import type { Post } from '../../lib/posts';
+import { site } from '../../lib/site';
+
+interface Props {
+  post: Post;
+  previous: Post | null;
+  nextPost: Post | null;
+}
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post, index) => ({
+    params: { number: String(post.number) },
+    props: {
+      post,
+      previous: posts[index + 1] ?? null,
+      nextPost: posts[index - 1] ?? null,
+    },
+  }));
+}
+
+const { post, previous, nextPost } = Astro.props as Props;
+const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1000).toISOString();
+---
+
+<BaseLayout
+  title={post.title}
+  description={post.excerpt}
+  article={{ publishedTime }}
+  hideHeader
+>
+  <article class="relative">
+    <a
+      href="/"
+      class="mb-8 inline-flex items-center gap-1.5 whitespace-nowrap text-muted transition-colors hover:text-fg lg:absolute lg:top-0 lg:right-full lg:mb-0 lg:mr-16"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="size-3.5"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path d="M9 14 4 9l5-5"></path>
+        <path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"></path>
+      </svg>
+      返回
+    </a>
+
+    <header class="mb-8">
+      <h1 class="text-base font-medium leading-[1.75]">{post.title}</h1>
+      <div class="flex flex-wrap items-baseline gap-x-1.5 text-base leading-[1.75] text-muted">
+        <time datetime={post.date}>{fullDate(post.created)}</time>
+        {
+          post.tags.map((tag) => (
+            <>
+              <span aria-hidden="true" class="text-faint">·</span>
+              <a href={`/tags/#${tag.slug}`} class="transition-colors hover:text-fg">
+                {tag.name}
+              </a>
+            </>
+          ))
+        }
+      </div>
+    </header>
+
+    <div class="prose" set:html={post.html} />
+
+    {
+      (previous || nextPost) && (
+        <nav
+          class="mt-16 grid gap-6 border-t border-line pt-8 sm:grid-cols-2"
+          aria-label="文章导航"
+        >
+          {previous && (
+            <a href={previous.url} class="flex flex-col gap-1">
+              <span class="text-sm text-muted">Previous</span>
+              <span class="text-base leading-[1.75] text-fg transition-colors hover:text-muted">
+                {previous.title}
+              </span>
+            </a>
+          )}
+          {nextPost && (
+            <a
+              href={nextPost.url}
+              class="flex flex-col gap-1 sm:col-start-2 sm:items-end sm:text-right"
+            >
+              <span class="text-sm text-muted">Next</span>
+              <span class="text-base leading-[1.75] text-fg transition-colors hover:text-muted">
+                {nextPost.title}
+              </span>
+            </a>
+          )}
+        </nav>
+      )
+    }
+  </article>
+</BaseLayout>

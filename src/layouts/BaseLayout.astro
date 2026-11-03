@@ -1,0 +1,67 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import { site } from '../lib/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  article?: { publishedTime: string };
+  hideHeader?: boolean;
+}
+
+const {
+  title,
+  description = site.description,
+  image = site.avatar,
+  article,
+  hideHeader = false,
+} = Astro.props;
+
+const pageTitle = title ? `${title} · ${site.title}` : site.title;
+const canonical = new URL(Astro.url.pathname, site.homeUrl).toString();
+---
+
+<!doctype html>
+<html lang={site.lang} data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={site.avatar} />
+    <link rel="alternate" type="application/rss+xml" title={site.title} href="/rss.xml" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fafaf9" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111110" />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:title" content={title ?? site.title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={image} />
+    <meta name="twitter:card" content="summary" />
+    {article && <meta property="article:published_time" content={article.publishedTime} />}
+    <script is:inline>
+      try {
+        const stored = localStorage.getItem('theme');
+        const dark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = stored || (dark ? 'dark' : 'light');
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div
+      class:list={[
+        'mx-auto w-[min(36rem,calc(100%-40px))] pb-16',
+        hideHeader ? 'pt-14' : 'pt-10 sm:pt-16',
+      ]}
+    >
+      {!hideHeader && <Header />}
+      <main>
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>

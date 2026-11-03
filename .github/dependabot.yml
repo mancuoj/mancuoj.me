@@ -1,8 +1,8 @@
 version: 2
 
 updates:
-  # Python 依赖：pyproject.toml 与 uv.lock 一起更新
-  - package-ecosystem: "uv"
+  # Node 依赖：package.json 与 pnpm-lock.yaml 一起更新
+  - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
@@ -10,7 +10,7 @@ updates:
       prefix: "chore"
       include: "scope"
     groups:
-      python:
+      npm:
         patterns: ["*"]
 
   # GitHub Actions 版本

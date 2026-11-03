@@ -38,35 +38,36 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v10.3.0
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          python-version: "3.12"
-          enable-cache: true
+          version: 12.16.1
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
 
       - name: Install dependencies
-        run: uv sync --locked
+        run: pnpm install --frozen-lockfile
 
-      - name: Lint and test
+      - name: Check and test
         run: |
-          uv run ruff check .
-          uv run ruff format --check .
-          uv run pytest -q
-
-      - name: Cache build cache
-        uses: actions/cache@v6
-        with:
-          path: .cache
-          key: blog-cache-v1
+          pnpm check
+          pnpm test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build
-        run: uv run python build.py
+        run: pnpm build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit content backup
         if: github.event_name != 'pull_request'
         run: |
+          node scripts/backup.mjs
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add backup
@@ -76,6 +77,8 @@ jobs:
             git commit -m "chore: 更新内容备份 [skip ci]"
             git push origin HEAD:main
           fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to Cloudflare Workers
         if: github.event_name != 'pull_request'

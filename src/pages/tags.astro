@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPosts, tagsIndex } from '../lib/posts';
+import { listDate } from '../lib/dates';
+
+const posts = await getPosts();
+const tags = tagsIndex(posts);
+---
+
+<BaseLayout title="标签">
+  <h1 class="sr-only">标签</h1>
+
+  <div class="mt-20 flex flex-wrap items-baseline gap-2 text-sm sm:mt-24" id="tag-filter" role="group" aria-label="按标签筛选">
+    <button class="text-fg" type="button" data-tag="*" aria-pressed="true">All</button>
+    {
+      tags.map((tag) => (
+        <>
+          <span class="text-faint" aria-hidden="true">·</span>
+          <button class="text-muted transition-colors hover:text-fg" type="button" data-tag={tag.slug} aria-pressed="false">
+            {tag.name}
+          </button>
+        </>
+      ))
+    }
+  </div>
+
+  <ol class="mt-4" id="tagged-posts">
+    {
+      posts.map((post) => (
+        <li class="post-item" data-tags={post.tags.map((tag) => tag.slug).join(' ')}>
+          <div class="flex items-baseline justify-between gap-6 py-1">
+            <a href={post.url} class="text-[15px] leading-6 text-fg transition-colors hover:text-muted">
+              {post.title}
+            </a>
+            <time datetime={post.date} class="shrink-0 text-[13px] text-faint tabular-nums">
+              {listDate(post.created)}
+            </time>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</BaseLayout>
+
+<script>
+  const root = document.getElementById('tag-filter');
+  const list = document.getElementById('tagged-posts');
+
+  if (root && list) {
+    const items = [...list.querySelectorAll<HTMLElement>('.post-item')];
+    let active = '*';
+
+    const apply = () => {
+      for (const item of items) {
+        const tags = ` ${item.dataset.tags ?? ''} `;
+        item.hidden = !(active === '*' || tags.includes(` ${active} `));
+      }
+    };
+
+    root.addEventListener('click', (event) => {
+      const chip = (event.target as HTMLElement).closest<HTMLButtonElement>('.chip, button');
+      if (!chip) return;
+      active = chip.dataset.tag ?? '*';
+      for (const button of root.querySelectorAll<HTMLButtonElement>('button')) {
+        const on = button === chip;
+        button.setAttribute('aria-pressed', String(on));
+        button.classList.toggle('text-fg', on);
+        button.classList.toggle('text-muted', !on);
+      }
+      apply();
+    });
+
+    if (location.hash) {
+      const target = root.querySelector<HTMLButtonElement>(
+        `button[data-tag="${CSS.escape(decodeURIComponent(location.hash.slice(1)))}"]`,
+      );
+      target?.click();
+    }
+  }
+</script>

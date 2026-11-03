@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import FooterIcons from '../components/FooterIcons.astro';
+import { getPosts, groupByYear } from '../lib/posts';
+import { site } from '../lib/site';
+
+const posts = await getPosts();
+const groups = groupByYear(posts);
+---
+
+<BaseLayout>
+  <p class="mt-20 max-w-md text-[15px] leading-[1.625] text-body text-pretty sm:mt-24">
+    {site.subtitle}
+  </p>
+  <PostList groups={groups} />
+  <FooterIcons />
+</BaseLayout>

@@ -1,0 +1,27 @@
+---
+import { site } from '../lib/site';
+import Icon from './Icon.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+const isExternal = (url: string) => url.startsWith('http');
+const href = (url: string) => (url.startsWith('/') ? url : url);
+---
+
+<footer class="mt-14 pt-6">
+  <nav class="flex flex-wrap items-center gap-x-[18px] gap-y-4" aria-label="链接">
+    {
+      site.social.map((item) => (
+        <a
+          href={href(item.url)}
+          class="text-muted transition-colors hover:text-fg"
+          aria-label={item.label}
+          title={item.label}
+          {...(isExternal(item.url) ? { target: '_blank', rel: 'noopener' } : {})}
+        >
+          <Icon name={item.icon} class="size-5" />
+        </a>
+      ))
+    }
+    <ThemeToggle />
+  </nav>
+</footer>
