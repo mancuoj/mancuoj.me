@@ -17,7 +17,7 @@ const isExternal = (url: string) => url.startsWith('http');
           title={item.label}
           {...(isExternal(item.url) ? { target: '_blank', rel: 'noopener' } : {})}
         >
-          <Icon name={item.icon} class="size-[18px]" />
+          <Icon name={item.icon} class="size-5" />
         </a>
       ))
     }
