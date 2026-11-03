@@ -1,3 +1,4 @@
+@import "@fontsource-variable/inter";
 @import "tailwindcss";
 
 :root {
@@ -35,9 +36,9 @@
   --color-line: var(--line);
   --color-surface: var(--surface);
   --color-subtle: var(--subtle);
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-    "Noto Sans", "PingFang SC", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans: "Inter Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", "Noto Sans", "PingFang SC", Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono",
     monospace;
 }
@@ -59,7 +60,8 @@
     background: var(--bg);
     color: var(--fg);
     font-family: var(--font-sans);
-    font-feature-settings: "tnum" 1;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    letter-spacing: -0.011em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -81,9 +83,9 @@
   }
 }
 
-/* --- 文章正文 ------------------------------------------------------------ */
+/* --- 文章正文：egoist page.css ------------------------------------------- */
 .prose {
-  font-size: 16px;
+  font-size: 15.5px;
   line-height: 1.75;
   color: var(--body);
   overflow-wrap: break-word;
@@ -98,29 +100,46 @@
 }
 
 .prose p {
-  margin: 1em 0;
+  margin: 20px 0;
 }
 
-.prose :is(h1, h2, h3, h4, h5, h6) {
+.prose h2 {
+  margin: 56px 0 16px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
   color: var(--fg);
-  font-size: 1em;
+}
+
+.prose h3 {
+  margin: 40px 0 12px;
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--fg);
+}
+
+.prose h4 {
+  margin: 32px 0 8px;
+  font-size: 15.5px;
   font-weight: 500;
   line-height: 1.35;
-  margin: 2.2em 0 0.6em;
+  color: var(--fg);
 }
 
-.prose :is(h1, h2, h3, h4, h5, h6):first-child {
+.prose :is(h2, h3, h4):first-child {
   margin-top: 0;
 }
 
 .prose strong {
   color: var(--fg);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .prose :is(ul, ol) {
-  margin: 1em 0;
-  padding-left: 1.5em;
+  margin: 20px 0;
+  padding-left: 20px;
 }
 
 .prose ul {
@@ -132,8 +151,8 @@
 }
 
 .prose li {
-  margin: 0.45em 0;
-  padding-left: 0.15em;
+  margin: 6px 0;
+  padding-left: 4px;
 }
 
 .prose li::marker {
@@ -141,22 +160,23 @@
 }
 
 .prose :is(ul, ol) :is(ul, ol) {
-  margin: 0.35em 0;
+  margin: 6px 0;
 }
 
 .prose blockquote {
-  margin: 1em 0;
-  padding-left: 1.1em;
-  border-left: 2px solid var(--line);
+  margin: 24px 0;
+  padding-left: 20px;
+  border-left: 1px solid color-mix(in srgb, var(--fg) 20%, transparent);
   color: var(--muted);
 }
 
 .prose blockquote p {
-  margin: 0.35em 0;
+  margin: 9px 0;
 }
 
 .prose hr {
-  margin: 2.5em 0;
+  margin: 48px auto;
+  width: 40px;
   border: 0;
   border-top: 1px solid var(--line);
 }
@@ -164,14 +184,13 @@
 .prose img {
   max-width: 100%;
   height: auto;
-  margin: 1.6em 0;
-  border-radius: 0.625rem;
+  margin: 32px 0;
+  border-radius: 8px;
 }
 
 .prose code {
-  padding: 0.1em 0.35em;
-  border: 1px solid var(--line);
-  border-radius: 0.3em;
+  padding: 0.15em 0.3em;
+  border-radius: 4px;
   background: var(--subtle);
   color: var(--fg);
   font-family: var(--font-mono);
@@ -179,12 +198,13 @@
 }
 
 .prose pre {
-  margin: 1.6em 0;
-  padding: 1em 1.15em;
+  margin: 24px 0;
+  padding: 20px;
   overflow-x: auto;
   border: 1px solid var(--line);
-  border-radius: 0.625rem;
+  border-radius: 8px;
   background: var(--subtle);
+  font-size: 13.5px;
   line-height: 1.65;
 }
 
@@ -192,25 +212,25 @@
   padding: 0;
   border: 0;
   background: none;
-  font-size: 0.875em;
+  font-size: inherit;
 }
 
 .prose table {
   display: block;
   width: fit-content;
   max-width: 100%;
-  margin: 1.25em 0;
+  margin: 24px 0;
   overflow-x: auto;
   border: 1px solid var(--line);
-  border-radius: 0.625rem;
+  border-radius: 8px;
   border-collapse: separate;
   border-spacing: 0;
-  font-size: 1rem;
+  font-size: 14px;
 }
 
 .prose th,
 .prose td {
-  padding: 0.55em 0.75em;
+  padding: 8px 16px 8px 0;
   border: 0;
   border-bottom: 1px solid var(--line);
   text-align: left;
@@ -221,7 +241,7 @@
 .prose th {
   background: var(--subtle);
   font-weight: 400;
-  color: var(--fg);
+  color: var(--muted);
 }
 
 .prose tbody tr:last-child td {
