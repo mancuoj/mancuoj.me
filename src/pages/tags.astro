@@ -50,8 +50,11 @@ const tags = tagsIndex(posts);
   const list = document.getElementById('tagged-posts');
 
   if (root && list) {
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('button')];
     const items = [...list.querySelectorAll<HTMLElement>('.post-item')];
     let active = '*';
+
+    const hashTag = () => decodeURIComponent(location.hash.slice(1));
 
     const apply = () => {
       for (const item of items) {
@@ -60,24 +63,32 @@ const tags = tagsIndex(posts);
       }
     };
 
-    root.addEventListener('click', (event) => {
-      const chip = (event.target as HTMLElement).closest<HTMLButtonElement>('.chip, button');
-      if (!chip) return;
-      active = chip.dataset.tag ?? '*';
-      for (const button of root.querySelectorAll<HTMLButtonElement>('button')) {
-        const on = button === chip;
+    const select = (slug: string, push: boolean) => {
+      const next = buttons.some((button) => button.dataset.tag === slug) ? slug : '*';
+      if (next === active) return;
+      active = next;
+
+      for (const button of buttons) {
+        const on = button.dataset.tag === active;
         button.setAttribute('aria-pressed', String(on));
         button.classList.toggle('text-fg', on);
         button.classList.toggle('text-muted', !on);
       }
+
       apply();
+      if (push) {
+        history.pushState(null, '', active === '*' ? '/tags' : `/tags#${active}`);
+      }
+    };
+
+    root.addEventListener('click', (event) => {
+      const chip = (event.target as HTMLElement).closest<HTMLButtonElement>('button');
+      if (chip) select(chip.dataset.tag ?? '*', true);
     });
 
-    if (location.hash) {
-      const target = root.querySelector<HTMLButtonElement>(
-        `button[data-tag="${CSS.escape(decodeURIComponent(location.hash.slice(1)))}"]`,
-      );
-      target?.click();
-    }
+    window.addEventListener('popstate', () => select(hashTag() || '*', false));
+    window.addEventListener('hashchange', () => select(hashTag() || '*', false));
+
+    select(hashTag() || '*', false);
   }
 </script>
