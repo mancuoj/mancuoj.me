@@ -8,13 +8,13 @@
     "preview": "node scripts/preview.mjs",
     "check": "astro check",
     "test": "vitest run",
-    "backup": "node scripts/backup.mjs"
+    "backup": "node scripts/backup.mjs",
+    "fonts": "python3 scripts/fonts/subset-fonts.py"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.5",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
-    "@fontsource-variable/schibsted-grotesk": "^5.3.0",
     "astro": "7.4.4",
     "remark-linkify-regex": "^1.2.1",
     "unist-util-visit": "^5.2.0",

@@ -1,4 +1,4 @@
-@import "@fontsource-variable/schibsted-grotesk";
+@import "./fonts.css";
 @import "tailwindcss";
 
 :root {

@@ -35,6 +35,13 @@ const canonical = new URL(Astro.url.pathname.replace(/\.html$/, ''), site.homeUr
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/avatar.png" />
+    <link
+      rel="preload"
+      href="/fonts/schibsted-grotesk-core.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <link rel="alternate" type="application/rss+xml" title={site.title} href="/rss.xml" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fafaf9" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111110" />
