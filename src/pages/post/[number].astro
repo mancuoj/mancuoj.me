@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
 import { getPosts } from '../../lib/posts';
 import { fullDate } from '../../lib/dates';
 import type { Post } from '../../lib/posts';
@@ -69,6 +70,17 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
             </>
           ))
         }
+        <span aria-hidden="true" class="text-faint">·</span>
+        <a
+          href={post.source}
+          class="inline-flex items-center self-center text-muted transition-colors hover:text-fg"
+          aria-label="在 GitHub 上查看 issue"
+          title="在 GitHub 上查看 issue"
+          target="_blank"
+          rel="noopener"
+        >
+          <Icon name="github" class="size-3.5" />
+        </a>
       </div>
     </header>
 
