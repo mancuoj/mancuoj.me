@@ -32,8 +32,9 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
   title={post.title}
   description={post.excerpt}
   article={{ publishedTime }}
+  hideHeader
 >
-  <article class="relative mt-6 lg:mt-8">
+  <article class="relative">
     <a
       href="/"
       class="post-back mb-8 inline-flex items-center gap-1.5 whitespace-nowrap text-sm text-muted transition-colors hover:text-fg lg:absolute lg:top-0 lg:right-full lg:mb-0 lg:mr-16"
