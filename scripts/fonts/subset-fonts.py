@@ -9,7 +9,9 @@ or when an upstream font version is bumped:
 
 This is deliberately NOT part of `pnpm build`. The script rewrites
 public/fonts/*.woff2, src/styles/fonts.css and src/lib/font-preload.ts, all of
-which are committed. It scans the built HTML in dist/ for the characters the
+which are committed. CI runs it after building and commits the result with
+`[skip ci]` when the subsets change, so a new article cannot ship with missing
+glyphs; running it locally is still supported. It scans the built HTML in dist/ for the characters the
 site actually renders:
 
   libertinus-{regular,bold,italic}-<hash>.woff2
@@ -31,7 +33,7 @@ repeat visits never revalidate a font.
 Code keeps the system monospace stack. Run `pnpm build` before this script so
 the scan sees the current content.
 
-Requires fonttools + brotli (`pip install fonttools brotli`).
+Requires fonttools + brotli: `pip install -r scripts/fonts/requirements.txt`.
 """
 from __future__ import annotations
 

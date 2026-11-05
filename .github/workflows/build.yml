@@ -49,6 +49,23 @@ jobs:
           node-version: 24
           cache: pnpm
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: scripts/fonts/requirements.txt
+
+      - name: Cache font sources
+        uses: actions/cache@v4
+        with:
+          path: .cache/fonts
+          key: fonts-${{ hashFiles('scripts/fonts/subset-fonts.py', 'scripts/fonts/requirements.txt') }}
+          restore-keys: fonts-
+
+      - name: Install font tools
+        run: pip install -r scripts/fonts/requirements.txt
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -61,6 +78,25 @@ jobs:
 
       - name: Build
         run: pnpm build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Refresh font subsets
+        run: |
+          pnpm fonts
+          git add public/fonts src/styles/fonts.css src/lib/font-preload.ts
+          if git diff --cached --quiet; then
+            echo "fonts up to date"
+            exit 0
+          fi
+          echo "fonts changed; rebuilding"
+          pnpm build
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore(fonts): refresh subsets [skip ci]"
+            git push origin HEAD:main
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
