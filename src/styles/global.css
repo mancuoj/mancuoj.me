@@ -295,10 +295,9 @@
   align-items: center;
   gap: 7px;
   color: var(--muted);
-  font-size: 12px;
-  letter-spacing: 0.1em;
+  font-size: 13px;
+  letter-spacing: 0.02em;
   line-height: 1.5;
-  text-transform: uppercase;
   transition: color 0.15s ease;
 }
 

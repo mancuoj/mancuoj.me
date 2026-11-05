@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import FooterIcons from '../components/FooterIcons.astro';
 import { getPosts, tagsIndex } from '../lib/posts';
 import { listDate } from '../lib/dates';
+import { displayTag } from '../lib/text';
 
 const posts = await getPosts();
 const tags = tagsIndex(posts);
@@ -22,7 +23,7 @@ const tags = tagsIndex(posts);
           aria-pressed="false"
           style={`--tag: #${tag.color}`}
         >
-          {tag.name}
+          {displayTag(tag.name)}
         </button>
       ))
     }
@@ -33,10 +34,10 @@ const tags = tagsIndex(posts);
       posts.map((post) => (
         <li class="post-item" data-tags={post.tags.map((tag) => tag.slug).join(' ')}>
           <div class="flex items-baseline justify-between gap-6 py-1">
-            <a href={post.url} class="text-[15px] leading-6 text-fg transition-colors hover:text-muted">
+            <a href={post.url} class="text-[17px] leading-6 text-fg transition-colors hover:text-muted">
               {post.title}
             </a>
-            <time datetime={post.date} class="shrink-0 text-[13px] text-faint tabular-nums">
+            <time datetime={post.date} class="shrink-0 text-[13.5px] text-faint tabular-nums">
               {listDate(post.created)}
             </time>
           </div>

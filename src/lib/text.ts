@@ -8,6 +8,18 @@ export function slugify(text: string): string {
   return value || 'tag';
 }
 
+// Labels come from GitHub issues; show all-caps labels in title case unless the
+// label is a common acronym.
+const ACRONYMS = new Set([
+  'AI', 'API', 'CSS', 'CLI', 'CPU', 'GPU', 'HTML', 'HTTP', 'JSON', 'JS',
+  'OS', 'PDF', 'PNG', 'RSS', 'SQL', 'SVG', 'TS', 'UI', 'URL', 'UX', 'YAML',
+]);
+
+export function displayTag(name: string): string {
+  if (!/^[A-Z]+$/.test(name) || name.length <= 2 || ACRONYMS.has(name)) return name;
+  return name.charAt(0) + name.slice(1).toLowerCase();
+}
+
 export function plainExcerpt(markdown: string, limit = 160): string {
   if (!markdown) return '';
   let text = markdown
