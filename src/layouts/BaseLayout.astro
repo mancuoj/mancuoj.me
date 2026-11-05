@@ -9,7 +9,6 @@ interface Props {
   description?: string;
   image?: string;
   article?: { publishedTime: string };
-  hideHeader?: boolean;
 }
 
 const defaultImage = new URL('/avatar.png', site.homeUrl).toString();
@@ -19,7 +18,6 @@ const {
   description = site.description,
   image = defaultImage,
   article,
-  hideHeader = false,
 } = Astro.props;
 
 const pageTitle = title ? `${title} · ${site.title}` : site.title;
@@ -57,13 +55,8 @@ const canonical = new URL(Astro.url.pathname.replace(/\.html$/, ''), site.homeUr
     </script>
   </head>
   <body>
-    <div
-      class:list={[
-        'mx-auto w-[min(36rem,calc(100%-40px))] pb-16',
-        hideHeader ? 'pt-14' : 'pt-10 sm:pt-16',
-      ]}
-    >
-      {!hideHeader && <Header />}
+    <div class="mx-auto w-[min(36rem,calc(100%-40px))] pb-16 pt-10 sm:pt-16">
+      <Header />
       <main>
         <slot />
       </main>

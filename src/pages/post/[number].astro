@@ -32,12 +32,11 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
   title={post.title}
   description={post.excerpt}
   article={{ publishedTime }}
-  hideHeader
 >
-  <article class="relative">
+  <article class="relative mt-6 lg:mt-8">
     <a
       href="/"
-      class="post-back mb-8 inline-flex items-center gap-1.5 whitespace-nowrap text-muted transition-colors hover:text-fg lg:absolute lg:top-0 lg:right-full lg:mb-0 lg:mr-16"
+      class="post-back mb-8 inline-flex items-center gap-1.5 whitespace-nowrap text-sm text-muted transition-colors hover:text-fg lg:absolute lg:top-0 lg:right-full lg:mb-0 lg:mr-16"
     >
       <svg
         viewBox="0 0 24 24"
@@ -57,8 +56,8 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
     </a>
 
     <header class="mb-8">
-      <h1 class="text-[26px] font-semibold leading-tight tracking-tight text-balance">{post.title}</h1>
-      <div class="mt-2 flex flex-wrap items-baseline gap-x-1.5 text-sm text-muted">
+      <h1 class="text-[22px] font-semibold leading-tight tracking-tight text-balance">{post.title}</h1>
+      <div class="mt-2 flex flex-wrap items-baseline gap-x-1.5 text-[13.5px] text-muted">
         <time datetime={post.date}>{fullDate(post.created)}</time>
         {
           post.tags.map((tag) => (
