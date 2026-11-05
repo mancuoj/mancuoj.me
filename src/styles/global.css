@@ -107,8 +107,7 @@
   font-size: 17px;
   line-height: 1.7;
   color: var(--body);
-  text-align: justify;
-  hyphens: auto;
+  text-align: left;
   overflow-wrap: break-word;
 }
 
@@ -126,13 +125,11 @@
 
 .prose p + p {
   margin-top: 0.65em;
-  text-indent: 1.5em;
 }
 
 .prose blockquote p,
 .prose li p {
   margin: 0;
-  text-indent: 0;
 }
 
 .prose h2 {
