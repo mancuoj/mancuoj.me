@@ -326,9 +326,7 @@
 }
 
 .tag-filter-item[aria-pressed="true"] {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 4px;
+  font-weight: 600;
 }
 
 .theme-sun {

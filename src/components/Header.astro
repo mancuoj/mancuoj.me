@@ -1,5 +1,8 @@
 ---
 import { site } from '../lib/site';
+
+const path = Astro.url.pathname.replace(/\.html$/, '');
+const onTags = path === '/tags';
 ---
 
 <header class="flex items-center justify-between">
@@ -8,7 +11,13 @@ import { site } from '../lib/site';
     <span class="text-sm font-medium">{site.title}</span>
   </a>
   <nav class="flex items-center gap-5 text-sm text-muted" aria-label="主导航">
-    <a href="/tags" class="transition-colors hover:text-fg">标签</a>
+    <a
+      href="/tags"
+      class:list={['transition-colors hover:text-fg', onTags && 'text-fg']}
+      aria-current={onTags ? 'page' : undefined}
+    >
+      标签
+    </a>
     <a href="/rss.xml" class="transition-colors hover:text-fg">RSS</a>
   </nav>
 </header>
