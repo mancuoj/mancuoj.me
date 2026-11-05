@@ -215,7 +215,15 @@ def describe(path: Path) -> str:
     )
 
 
-def face_css(family: str, style: str, weight: str, file: str, chars: set[int]) -> str:
+def face_css(
+    family: str,
+    style: str,
+    weight: str,
+    file: str,
+    chars: set[int],
+    size_adjust: str | None = None,
+) -> str:
+    adjust = f"  size-adjust: {size_adjust};\n" if size_adjust else ""
     return (
         "@font-face {\n"
         f'  font-family: "{family}";\n'
@@ -223,6 +231,7 @@ def face_css(family: str, style: str, weight: str, file: str, chars: set[int]) -
         "  font-display: swap;\n"
         f"  font-weight: {weight};\n"
         f'  src: url("/fonts/{file}") format("woff2");\n'
+        f"{adjust}"
         f"  unicode-range: {unicode_range(chars)};\n"
         "}\n"
     )
@@ -277,7 +286,7 @@ def main() -> None:
         raise SystemExit("error: CJK core and ext ranges overlap")
 
     faces = [
-        face_css("Libertinus Serif", slant, str(weight), f"{name}.woff2", latin)
+        face_css("Libertinus Serif", slant, str(weight), f"{name}.woff2", latin, "104%")
         for name, weight, slant in LIBERTINUS_STYLES.values()
     ]
     faces.append(
