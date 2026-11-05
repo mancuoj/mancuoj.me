@@ -294,7 +294,7 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  color: var(--muted);
+  color: var(--faint);
   font-size: 13px;
   letter-spacing: 0.02em;
   line-height: 1.5;
@@ -307,6 +307,8 @@
   height: 5px;
   border-radius: 9999px;
   background: var(--tag, var(--muted));
+  opacity: 0.5;
+  transition: opacity 0.15s ease;
 }
 
 .tag-filter-item--all::before {
@@ -316,6 +318,17 @@
 .tag-filter-item:hover,
 .tag-filter-item[aria-pressed="true"] {
   color: var(--fg);
+}
+
+.tag-filter-item:hover::before,
+.tag-filter-item[aria-pressed="true"]::before {
+  opacity: 1;
+}
+
+.tag-filter-item[aria-pressed="true"] {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
 }
 
 .theme-sun {
