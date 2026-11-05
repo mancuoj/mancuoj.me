@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import { site } from '../lib/site';
+import { preloadCjkFont, preloadFont } from '../lib/font-preload';
 
 interface Props {
   title?: string;
@@ -35,13 +36,8 @@ const canonical = new URL(Astro.url.pathname.replace(/\.html$/, ''), site.homeUr
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/avatar.png" />
-    <link
-      rel="preload"
-      href="/fonts/libertinus-regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <link rel="preload" href={preloadFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={preloadCjkFont} as="font" type="font/woff2" crossorigin />
     <link rel="alternate" type="application/rss+xml" title={site.title} href="/rss.xml" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fafaf9" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111110" />
