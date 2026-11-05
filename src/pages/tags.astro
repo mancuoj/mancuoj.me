@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import FooterIcons from '../components/FooterIcons.astro';
 import { getPosts, tagsIndex } from '../lib/posts';
 import { listDate } from '../lib/dates';
-import { displayTag } from '../lib/text';
 
 const posts = await getPosts();
 const tags = tagsIndex(posts);
@@ -23,7 +22,7 @@ const tags = tagsIndex(posts);
           aria-pressed="false"
           style={`--tag: #${tag.color}`}
         >
-          {displayTag(tag.name)}
+          {tag.name}
         </button>
       ))
     }
