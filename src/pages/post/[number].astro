@@ -73,13 +73,13 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
         <span aria-hidden="true" class="text-faint">·</span>
         <a
           href={post.source}
-          class="inline-flex items-center self-center text-muted transition-colors hover:text-fg"
+          class="-m-1.5 inline-flex items-center self-center p-1.5 text-muted transition-colors hover:text-fg"
           aria-label="在 GitHub 上查看 issue"
           title="在 GitHub 上查看 issue"
           target="_blank"
           rel="noopener"
         >
-          <Icon name="github" class="size-3.5" />
+          <Icon name="external" class="size-3.5" />
         </a>
       </div>
     </header>
