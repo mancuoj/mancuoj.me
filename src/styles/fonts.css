@@ -55,8 +55,8 @@
   font-style: normal;
   font-display: swap;
   font-weight: 200 900;
-  src: url("/fonts/noto-serif-sc-post-10-f2d9ab2f.woff2") format("woff2");
-  unicode-range: U+4E1A,U+4E8C,U+4E9B,U+4F0D,U+51CF,U+5378,U+542F,U+5E95,U+5F62,U+6001,U+6389,U+63D2,U+63ED,U+65CF,U+665A,U+6740,U+7532,U+7CBE,U+80A5,U+82F1,U+8350,U+8361,U+8BA2,U+8F6F,U+9274;
+  src: url("/fonts/noto-serif-sc-post-10-d0e23b3c.woff2") format("woff2");
+  unicode-range: U+4E1A,U+4E8C,U+4E9B,U+4F0D,U+51CF,U+5378,U+542F,U+5E95,U+5F62,U+6001,U+6389,U+63D2,U+63ED,U+65CF,U+665A,U+6740,U+6D17,U+7532,U+7CBE,U+80A5,U+82F1,U+8350,U+8361,U+8BA2,U+8F6F,U+9274;
 }
 
 @font-face {
