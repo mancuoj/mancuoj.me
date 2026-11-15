@@ -139,6 +139,7 @@ def scan_content(dist: Path):
     if not pages:
         raise SystemExit(f"error: no HTML in {dist}; run `pnpm build` first")
     counts: Counter[str] = Counter()
+    head_chars: set[str] = set()
     pages_per_char: dict[str, int] = Counter()
     non_post_chars: set[str] = set()
     post_pages: dict[str, dict[str, set[str]]] = {}
@@ -157,6 +158,10 @@ def scan_content(dist: Path):
         body = re.search(r"<body.*?</body>", markup, re.S)
         markup = body.group(0) if body else markup
         markup = re.sub(r"<(script|style)\b.*?</\1>", "", markup, flags=re.S)
+        # 700 档只服务标题与加粗：把渲染成 700 的元素里的字单独收集。
+        for tag in ("h2", "h3", "h4", "h5", "h6", "strong", "b"):
+            for inner in re.findall(rf"<{tag}\b[^>]*>(.*?)</{tag}>", markup, re.S):
+                head_chars.update(strip_tags(inner))
         text = strip_tags(markup)
         chars = set(text)
         counts.update(text)
@@ -171,7 +176,7 @@ def scan_content(dist: Path):
                 "all": chars | script_cjk,
                 "prose": set(prose_text(markup)),
             }
-    return counts, pages_per_char, non_post_chars, post_pages
+    return counts, head_chars, pages_per_char, non_post_chars, post_pages
 
 
 def compute_charsets(
@@ -232,6 +237,20 @@ def subset_bytes(font: TTFont, chars: set[int], features: list[str]) -> bytes:
     if data[:4] != b"wOF2":
         raise SystemExit("error: subsetter did not produce WOFF2")
     return data
+
+
+def static_weight(data: bytes, wght: int) -> bytes:
+    """把可变字重的子集实例化成单一静态字重，体积通常能砍掉近一半。"""
+    from fontTools.varLib import instancer
+
+    font = TTFont(io.BytesIO(data), recalcTimestamp=False)
+    if "fvar" not in font:
+        return data
+    static = instancer.instantiateVariableFont(font, {"wght": wght}, inplace=False)
+    static.flavor = "woff2"
+    buffer = io.BytesIO()
+    static.save(buffer)
+    return buffer.getvalue()
 
 
 def write_font(out: Path, stem: str, data: bytes) -> tuple[Path, str]:
@@ -321,7 +340,7 @@ def main() -> None:
             return TTFont(io.BytesIO(data), recalcTimestamp=False)
 
         latin_cmap = set(read_otf("Regular").getBestCmap())
-        counts, pages_per_char, non_post, post_pages = scan_content(args.dist)
+        counts, head_chars, pages_per_char, non_post, post_pages = scan_content(args.dist)
         cjk_cmap = set(TTFont(noto, recalcTimestamp=False).getBestCmap())
         latin, cjk_core, cjk_shared, per_post = compute_charsets(
             counts, pages_per_char, non_post, post_pages, latin_cmap, cjk_cmap
@@ -343,18 +362,27 @@ def main() -> None:
     ):
         if not chars:
             continue
-        data = subset_bytes(TTFont(noto, recalcTimestamp=False), chars, CJK_FEATURES)
+        data = static_weight(subset_bytes(TTFont(noto, recalcTimestamp=False), chars, CJK_FEATURES), 600)
         path, name = write_font(args.out, stem, data)
-        noto_files.append((stem, chars, name))
+        noto_files.append((stem, chars, name, "600"))
         written.append((path, chars))
     for page, chars in per_post.items():
         if not chars:
             continue
         number = Path(page).stem
-        data = subset_bytes(TTFont(noto, recalcTimestamp=False), chars, CJK_FEATURES)
+        data = static_weight(subset_bytes(TTFont(noto, recalcTimestamp=False), chars, CJK_FEATURES), 600)
         path, name = write_font(args.out, f"noto-serif-sc-post-{number}", data)
-        noto_files.append((f"noto-serif-sc-post-{number}", chars, name))
+        noto_files.append((f"noto-serif-sc-post-{number}", chars, name, "600"))
         written.append((path, chars))
+
+    # 标题与加粗是 700，单独一份静态 700 的小子集，避免为它保留整条可变轴。
+    is_cjk_ch = lambda ch: 0x3000 <= ord(ch) <= 0x303F or 0x4E00 <= ord(ch) <= 0x9FFF or 0xFF00 <= ord(ch) <= 0xFFEF
+    bold_chars = {ord(ch) for ch in head_chars if is_cjk_ch(ch)} & set(TTFont(noto).getBestCmap())
+    if bold_chars:
+        data = static_weight(subset_bytes(TTFont(noto, recalcTimestamp=False), bold_chars, CJK_FEATURES), 700)
+        path, name = write_font(args.out, "noto-serif-sc-bold", data)
+        noto_files.append(("noto-serif-sc-bold", bold_chars, name, "700"))
+        written.append((path, bold_chars))
     del noto_font
 
     # Verify cmaps and page coverage before writing any CSS.
@@ -369,8 +397,12 @@ def main() -> None:
     non_post_cjk = {ord(ch) for ch in non_post if is_cjk(ch)}
     if non_post_cjk - cjk_core:
         raise SystemExit(f"error: non-post CJK missing from core: {sorted(non_post_cjk - cjk_core)[:8]}")
+    if bold_chars:
+        missing_bold = {ord(ch) for ch in head_chars if is_cjk(ch)} - (cjk_core | cjk_shared | bold_chars)
+        if missing_bold:
+            raise SystemExit(f"error: 700 标题用字缺失: {sorted(missing_bold)[:8]}")
     for page, data in post_pages.items():
-        covered = cjk_core | cjk_shared | per_post.get(page, set())
+        covered = cjk_core | cjk_shared | per_post.get(page, set()) | bold_chars
         missing = {ord(ch) for ch in data["all"] if is_cjk(ch)} - covered
         if missing:
             raise SystemExit(f"error: {page} missing CJK: {sorted(missing)[:8]}")
@@ -387,8 +419,8 @@ def main() -> None:
         for stem, weight, slant in LIBERTINUS_STYLES.values()
     ]
     faces += [
-        face_css("Noto Serif SC", "normal", "200 900", name, chars)
-        for _, chars, name in noto_files
+        face_css("Noto Serif SC", "normal", weight, name, chars)
+        for _, chars, name, weight in noto_files
     ]
     css = (
         "/* Generated by scripts/fonts/subset-fonts.py. Do not edit by hand.\n"
