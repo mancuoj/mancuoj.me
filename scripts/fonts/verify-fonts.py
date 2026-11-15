@@ -9,13 +9,20 @@
 """
 from __future__ import annotations
 
+import importlib.util
 import re
 import sys
 from pathlib import Path
 
-import importlib.util
-
-from fontTools.ttLib import TTFont
+try:
+    from fontTools.ttLib import TTFont
+except ImportError:  # pragma: no cover
+    sys.exit(
+        "error: 缺少 fonttools。先装依赖再跑：\n"
+        "  python3 -m venv .venv-fonts && .venv-fonts/bin/pip install -r scripts/fonts/requirements.txt\n"
+        "  .venv-fonts/bin/python scripts/fonts/verify-fonts.py\n"
+        "（CI 里由 workflow 的 `Install font tools` 自动装好，不需要手动处理。）"
+    )
 
 ROOT = Path(__file__).resolve().parents[2]
 DIST = ROOT / "dist"
