@@ -510,6 +510,21 @@ def main() -> None:
         if missing:
             raise SystemExit(f"error: {page} missing CJK: {sorted(missing)[:8]}")
 
+    # 同族同字重的 unicode-range 不允许重叠：浏览器会把所有命中的 face 都下载，
+    # 重叠只会让页面多下文件（实测过），所以在这里直接拦死。
+    seen: dict[tuple[str, str], list[tuple[str, set[int]]]] = {}
+    for _, chars, name, weight in noto_files:
+        seen.setdefault(("Noto Serif SC", weight), []).append((name, chars))
+    for (family, weight), items in seen.items():
+        for i in range(len(items)):
+            for j in range(i + 1, len(items)):
+                common = items[i][1] & items[j][1]
+                if common:
+                    raise SystemExit(
+                        f"error: {family} {weight} 的 unicode-range 重叠："
+                        f"{items[i][0]} ∩ {items[j][0]} = {sorted(common)[:8]}"
+                    )
+
     # Drop fonts from previous runs, keeping only the files just written.
     expected = {path.name for path, _ in written}
     for pattern in FONT_GLOBS:
