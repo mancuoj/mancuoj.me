@@ -67,6 +67,7 @@ LIBERTINUS_ZIP = CACHE / "Libertinus-7.051.zip"
 LIBERTINUS_OTF = "Libertinus-7.051/static/OTF/LibertinusSerif-{style}.otf"
 LIBERTINUS_STYLES = {
     "Regular": ("libertinus-regular", 400, "normal"),
+    "Semibold": ("libertinus-semibold", 600, "normal"),
     "Bold": ("libertinus-bold", 700, "normal"),
     "Italic": ("libertinus-italic", 400, "italic"),
 }
