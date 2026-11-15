@@ -109,6 +109,11 @@ def fetch(url: str, path: Path, sha256: str) -> Path:
     return path
 
 
+def is_cjk_char(ch: str) -> bool:
+    cp = ord(ch)
+    return 0x3000 <= cp <= 0x303F or 0x4E00 <= cp <= 0x9FFF or 0xFF00 <= cp <= 0xFFEF
+
+
 def strip_tags(markup: str) -> str:
     return html.unescape(re.sub(r"<[^>]+>", "", markup))
 
@@ -134,12 +139,66 @@ def prose_text(markup: str) -> str:
     return strip_tags(markup[start : index - 6])
 
 
+
+def classify_weights(markup: str) -> dict[int, set[str]]:
+    """按实际渲染字重给字符分类：400 辅助信息、600 正文、700 标题与加粗。
+
+    规则和 CSS 对齐：h1 是 font-semibold(600)，h2–h6 与 strong/b 是 700，
+    `.prose` 正文是 600，其余站点 chrome（导航、日期、标签）是 400。
+    """
+    from html.parser import HTMLParser
+
+    class P(HTMLParser):
+        def __init__(self) -> None:
+            super().__init__(convert_charrefs=True)
+            self.stack: list[tuple[str, int | None]] = []  # (tag, weight)
+            self.prose_depth = 0
+            self.out: dict[int, set[str]] = {400: set(), 600: set(), 700: set()}
+
+        def handle_starttag(self, tag, attrs):
+            cls = dict(attrs).get("class") or ""
+            is_prose = tag == "div" and "prose" in cls.split()
+            if is_prose:
+                self.prose_depth += 1
+            weight = None
+            if tag == "h1":
+                weight = 600
+            elif tag in ("h2", "h3", "h4", "h5", "h6", "strong", "b"):
+                weight = 700
+            elif self.prose_depth or is_prose:
+                weight = 600
+            else:
+                weight = 400
+            self.stack.append((tag, weight))
+            if is_prose:
+                self.stack[-1] = (tag, 600)
+
+        def handle_endtag(self, tag):
+            for i in range(len(self.stack) - 1, -1, -1):
+                if self.stack[i][0] == tag:
+                    if tag == "div" and self.prose_depth:
+                        self.prose_depth -= 1
+                    del self.stack[i:]
+                    break
+
+        def handle_data(self, data):
+            weight = self.stack[-1][1] if self.stack else 400
+            for ch in data:
+                self.out[weight].add(ch)
+
+    parser = P()
+    parser.feed(markup)
+    return parser.out
+
 def scan_content(dist: Path):
     pages = sorted(dist.rglob("*.html"))
     if not pages:
         raise SystemExit(f"error: no HTML in {dist}; run `pnpm build` first")
     counts: Counter[str] = Counter()
     head_chars: set[str] = set()
+    per_page_weights: dict[str, dict[int, set[str]]] = {}
+    chars_600: set[str] = set()
+    chars_400: set[str] = set()
     pages_per_char: dict[str, int] = Counter()
     non_post_chars: set[str] = set()
     post_pages: dict[str, dict[str, set[str]]] = {}
@@ -162,6 +221,10 @@ def scan_content(dist: Path):
         for tag in ("h2", "h3", "h4", "h5", "h6", "strong", "b"):
             for inner in re.findall(rf"<{tag}\b[^>]*>(.*?)</{tag}>", markup, re.S):
                 head_chars.update(strip_tags(inner))
+        weights = classify_weights(markup)
+        per_page_weights[page.as_posix()] = weights
+        chars_600 |= weights[600]
+        chars_400 |= weights[400]
         text = strip_tags(markup)
         chars = set(text)
         counts.update(text)
@@ -176,7 +239,16 @@ def scan_content(dist: Path):
                 "all": chars | script_cjk,
                 "prose": set(prose_text(markup)),
             }
-    return counts, head_chars, pages_per_char, non_post_chars, post_pages
+    return (
+        counts,
+        head_chars,
+        chars_600,
+        chars_400,
+        per_page_weights,
+        pages_per_char,
+        non_post_chars,
+        post_pages,
+    )
 
 
 def compute_charsets(
@@ -340,11 +412,27 @@ def main() -> None:
             return TTFont(io.BytesIO(data), recalcTimestamp=False)
 
         latin_cmap = set(read_otf("Regular").getBestCmap())
-        counts, head_chars, pages_per_char, non_post, post_pages = scan_content(args.dist)
+        (
+            counts,
+            head_chars,
+            chars_600,
+            chars_400,
+            per_page_weights,
+            pages_per_char,
+            non_post,
+            post_pages,
+        ) = scan_content(args.dist)
         cjk_cmap = set(TTFont(noto, recalcTimestamp=False).getBestCmap())
         latin, cjk_core, cjk_shared, per_post = compute_charsets(
             counts, pages_per_char, non_post, post_pages, latin_cmap, cjk_cmap
         )
+
+        # 600 档要覆盖所有 600 用字（正文 + 文章页 h1 标题）；core 每页都加载，
+        # 收口在这里最省事，通常只有几个字。
+        extra600 = {ord(ch) for ch in chars_600 if is_cjk_char(ch)} - (
+            cjk_core | cjk_shared | (set().union(*per_post.values()) if per_post else set())
+        )
+        cjk_core |= extra600
 
         written: list[tuple[Path, set[int]]] = []
         latin_files: dict[str, str] = {}
@@ -385,6 +473,17 @@ def main() -> None:
         written.append((path, bold_chars))
     del noto_font
 
+    # 站点 chrome（导航、日期、标签名）是 400，单独一份静态 400 小子集。
+    noto_cmap = set(TTFont(noto).getBestCmap())
+    chrome_chars = {ord(ch) for ch in chars_400 if is_cjk_char(ch)} & noto_cmap
+    if chrome_chars:
+        data = static_weight(
+            subset_bytes(TTFont(noto, recalcTimestamp=False), chrome_chars, CJK_FEATURES), 400
+        )
+        path, name = write_font(args.out, "noto-serif-sc-chrome", data)
+        noto_files.append(("noto-serif-sc-chrome", chrome_chars, name, "400"))
+        written.append((path, chrome_chars))
+
     # Verify cmaps and page coverage before writing any CSS.
     for path, wanted in written:
         got = set(TTFont(path).getBestCmap())
@@ -393,7 +492,7 @@ def main() -> None:
                 f"error: {path.name} cmap mismatch: missing "
                 f"{sorted(wanted - got)[:8]} extra {sorted(got - wanted)[:8]}"
             )
-    is_cjk = lambda ch: 0x3000 <= ord(ch) <= 0x303F or 0x4E00 <= ord(ch) <= 0x9FFF or 0xFF00 <= ord(ch) <= 0xFFEF
+    is_cjk = is_cjk_char
     non_post_cjk = {ord(ch) for ch in non_post if is_cjk(ch)}
     if non_post_cjk - cjk_core:
         raise SystemExit(f"error: non-post CJK missing from core: {sorted(non_post_cjk - cjk_core)[:8]}")
@@ -401,8 +500,12 @@ def main() -> None:
         missing_bold = {ord(ch) for ch in head_chars if is_cjk(ch)} - (cjk_core | cjk_shared | bold_chars)
         if missing_bold:
             raise SystemExit(f"error: 700 标题用字缺失: {sorted(missing_bold)[:8]}")
+    if chrome_chars:
+        missing_chrome = {ord(ch) for ch in chars_400 if is_cjk(ch)} - chrome_chars
+        if missing_chrome:
+            raise SystemExit(f"error: 400 chrome 用字缺失: {sorted(missing_chrome)[:8]}")
     for page, data in post_pages.items():
-        covered = cjk_core | cjk_shared | per_post.get(page, set()) | bold_chars
+        covered = cjk_core | cjk_shared | per_post.get(page, set()) | bold_chars | chrome_chars
         missing = {ord(ch) for ch in data["all"] if is_cjk(ch)} - covered
         if missing:
             raise SystemExit(f"error: {page} missing CJK: {sorted(missing)[:8]}")

@@ -13,10 +13,21 @@ import re
 import sys
 from pathlib import Path
 
+import importlib.util
+
 from fontTools.ttLib import TTFont
 
 ROOT = Path(__file__).resolve().parents[2]
 DIST = ROOT / "dist"
+
+
+def load_classifier():
+    spec = importlib.util.spec_from_file_location(
+        "subset_fonts", Path(__file__).with_name("subset-fonts.py")
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.classify_weights
 
 
 def is_cjk(ch: str) -> bool:
@@ -71,6 +82,8 @@ def main() -> None:
     if not css_files:
         sys.exit("error: dist/_astro 里没有 CSS，先跑 pnpm build")
 
+    classify_weights = load_classifier()
+
     blocks = []
     for css in css_files:
         blocks.extend(face_blocks(css.read_text(encoding="utf-8")))
@@ -96,21 +109,32 @@ def main() -> None:
             problems += 1
     print(f"faces: {len(blocks)} 个，range/cmap 一致 {len(blocks) - problems}/{len(blocks)}")
 
+    by_weight: dict[str, set[int]] = {}
+    for b in blocks:
+        by_weight.setdefault(b["weight"], set()).update(b["range"])
+
     covered = set().union(*cmaps) if cmaps else set()
 
-    # 2) 逐页：正文里每个汉字都必须被某个 face 覆盖。
+    # 2) 逐页：按字重分别校验（400 chrome / 600 正文 / 700 标题）。
     for page in pages:
         markup = page.read_text(encoding="utf-8")
         body = re.search(r"<body.*?</body>", markup, re.S)
         markup = body.group(0) if body else markup
         markup = re.sub(r"<(script|style)\b.*?</\1>", "", markup, flags=re.S)
-        text = re.sub(r"<[^>]+>", "", markup)
-        chars = {ch for ch in text if is_cjk(ch)}
-        missing = sorted(ord(ch) for ch in chars - {chr(cp) for cp in covered})
-        status = "✓" if not missing else "✗"
+        weights = classify_weights(markup)
         rel = page.relative_to(DIST)
-        print(f"{status} {rel}: {len(chars)} 个汉字" + (f"，缺 {missing[:8]}" if missing else ""))
-        problems += len(missing) and 1 or 0
+        bad = []
+        total = 0
+        for weight, chars in sorted(weights.items()):
+            cjk = {ord(ch) for ch in chars if is_cjk(ch)}
+            total += len(cjk)
+            allowed = by_weight.get(str(weight), set())
+            missing = sorted(cjk - allowed)
+            if missing:
+                bad.append(f"{weight}: 缺 {missing[:6]}")
+        status = "✓" if not bad else "✗"
+        print(f"{status} {rel}: {total} 个汉字" + ("，" + "；".join(bad) if bad else ""))
+        problems += 1 if bad else 0
 
     if problems:
         sys.exit(1)
