@@ -91,6 +91,8 @@ jobs:
           fi
           echo "fonts changed; rebuilding"
           pnpm build
+          # 这一步会直接 commit 到 main，所以先验：坏字体不许进 main。
+          pnpm verify:fonts
           if [ "${{ github.event_name }}" != "pull_request" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -99,6 +101,10 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 兜底：PR 与「字体没变化」的路径不走上面那次校验，这里再验一遍。
+      - name: Verify font coverage
+        run: pnpm verify:fonts
 
       - name: Commit content backup
         if: github.event_name != 'pull_request'
@@ -115,10 +121,6 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # 字体切片是自动生成、自动部署的，必须在这里拦住"少字/覆盖错"的情况。
-      - name: Verify font coverage
-        run: pnpm verify:fonts
 
       - name: Deploy to Cloudflare Workers
         if: github.event_name != 'pull_request'
