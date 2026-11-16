@@ -329,38 +329,16 @@
   transition: opacity 0.15s ease;
 }
 
-/* 文章页 meta 里的标签：颜色只由小圆点承载，文字只变深浅，和标签页保持一致。 */
-.tag-dot-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.tag-dot-link::before {
-  content: "";
-  width: 5px;
-  height: 5px;
-  border-radius: 9999px;
-  background: var(--tag, var(--muted));
-  opacity: 0.5;
-  transition: opacity 150ms ease;
-}
-
-.tag-dot-link:hover::before {
-  opacity: 1;
-}
-
-/* hover 染色：把标签色往当前文字色拉 40%，两种主题都自动可读；
-   直接把文字设成原色或调低 opacity 都会掉对比度（黄/灰在浅底下几乎看不见）。 */
-/* hover 染色：把标签色往当前文字色拉 40%，两种主题都自动可读。
+/* 文章页 meta 里的标签：静止不染色，hover 时才把标签色带进文字。
    混色只在支持 color-mix 的浏览器里生效；不支持的退回 --muted，
-   而不是标签原色（黄 #e4e669 在浅底下对比度只有 1.27:1）。 */
-.tag-dot-link:hover {
+   而不是标签原色（黄 #e4e669 在浅底下对比度只有 1.27:1，
+   是把标签色往 --fg 拉 40% 之后才过 AA）。 */
+.post-tag:hover {
   color: var(--hover, var(--muted));
 }
 
 @supports (color: color-mix(in lab, red, red)) {
-  .tag-dot-link:hover {
+  .post-tag:hover {
     --hover: color-mix(in oklab, var(--tag, var(--muted)) 40%, var(--fg));
   }
 }

@@ -67,7 +67,7 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
               <span aria-hidden="true" class="text-faint">·</span>
               <a
                 href={`/tags#${tag.slug}`}
-                class="tag-dot-link transition-colors"
+                class="post-tag transition-colors"
                 style={`--tag: #${tag.color ?? '999999'}`}
               >
                 {tag.name}
