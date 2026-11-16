@@ -12,7 +12,7 @@
     "fonts": "python3 scripts/fonts/subset-fonts.py",
     "verify:fonts": "python3 scripts/fonts/verify-fonts.py",
     "verify": "pnpm check && pnpm test",
-    "verify:all": "pnpm verify && GITHUB_TOKEN=${GITHUB_TOKEN:-$(gh auth token)} pnpm build"
+    "verify:all": "pnpm verify && node scripts/verify-all.mjs"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.5",
