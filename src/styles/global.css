@@ -80,6 +80,7 @@
     background: var(--bg);
     color: var(--fg);
     font-family: var(--font-serif);
+    font-weight: 600;
     text-spacing-trim: space-first;
     text-autospace: normal;
     -webkit-font-smoothing: antialiased;
@@ -108,7 +109,6 @@
 .prose {
   font-size: 17px;
   line-height: 1.7;
-  font-weight: 600;
   line-break: strict;
   color: var(--body);
   text-align: left;
