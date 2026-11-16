@@ -73,6 +73,8 @@ jobs:
         run: |
           pnpm check
           pnpm test
+          # 零依赖的守卫自检：不需要 dist，也不需要 fonttools
+          python3 scripts/fonts/verify-fonts.py --selftest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

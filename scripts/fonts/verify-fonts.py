@@ -27,6 +27,38 @@ import re
 import sys
 from pathlib import Path
 
+def check_light_weights(css_text: str) -> list[str]:
+    """全站只有 600/700 两档中文字重。出现 400/500 的普通声明，就意味着
+    Libertinus regular（25.6 KB）会被重新下载——这条把那种回退变成构建失败。
+    `code`/`pre` 例外：等宽字体被钉在 400，防止合成假粗体。
+    """
+    problems: list[str] = []
+    for m in re.finditer(r"([^{}]+)\{([^{}]*)\}", css_text):
+        selector, body = m.group(1).strip(), m.group(2)
+        if selector.startswith("@font-face") or "font-weight" not in body:
+            continue
+        if re.search(r"font-weight:\s*(400|500)\b", body):
+            if any(tag in selector for tag in ("code", "pre", "kbd", "samp")):
+                continue
+            problems.append(selector[:80])
+    return problems
+
+
+def selftest() -> None:
+    assert check_light_weights(".probe{font-weight:400}") == [".probe"], "普通选择器的 400 应被拦"
+    assert check_light_weights(".probe{font-weight:500}") == [".probe"], "普通选择器的 500 应被拦"
+    assert check_light_weights("code{font-weight:400}") == [], "code 里的 400 应放行"
+    assert check_light_weights(".prose pre{font-weight:400}") == [], "pre 里的 400 应放行"
+    assert check_light_weights(".a{font-weight:600}") == [], "600 不该报"
+    assert check_light_weights("@font-face{font-weight:400;src:url(/x.woff2)}") == [], "字体声明不该报"
+    print("✓ guard selftest")
+
+
+# 纯逻辑自检：不依赖 fonttools，也不需要 dist，任何 python3 都能跑。
+if "--selftest" in sys.argv:
+    selftest()
+    sys.exit(0)
+
 try:
     from fontTools.ttLib import TTFont
 except ImportError:  # pragma: no cover
@@ -93,37 +125,7 @@ def face_blocks(css_text: str) -> list[dict]:
     return blocks
 
 
-def check_light_weights(css_text: str) -> list[str]:
-    """全站只有 600/700 两档中文字重。出现 400/500 的普通声明，就意味着
-    Libertinus regular（25.6 KB）会被重新下载——这条把那种回退变成构建失败。
-    `code`/`pre` 例外：等宽字体被钉在 400，防止合成假粗体。
-    """
-    problems: list[str] = []
-    for m in re.finditer(r"([^{}]+)\{([^{}]*)\}", css_text):
-        selector, body = m.group(1).strip(), m.group(2)
-        if selector.startswith("@font-face") or "font-weight" not in body:
-            continue
-        if re.search(r"font-weight:\s*(400|500)\b", body):
-            if any(tag in selector for tag in ("code", "pre", "kbd", "samp")):
-                continue
-            problems.append(selector[:80])
-    return problems
-
-
-def selftest() -> None:
-    assert check_light_weights(".probe{font-weight:400}") == [".probe"], "普通选择器的 400 应被拦"
-    assert check_light_weights(".probe{font-weight:500}") == [".probe"], "普通选择器的 500 应被拦"
-    assert check_light_weights("code{font-weight:400}") == [], "code 里的 400 应放行"
-    assert check_light_weights(".prose pre{font-weight:400}") == [], "pre 里的 400 应放行"
-    assert check_light_weights(".a{font-weight:600}") == [], "600 不该报"
-    assert check_light_weights("@font-face{font-weight:400;src:url(/x.woff2)}") == [], "字体声明不该报"
-    print("✓ guard selftest")
-
-
 def main() -> None:
-    if "--selftest" in sys.argv:
-        selftest()
-        return
     pages = sorted(DIST.rglob("*.html"))
     if not pages:
         sys.exit("error: dist 里没有 HTML，先跑 pnpm build")
