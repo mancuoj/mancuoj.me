@@ -2,7 +2,7 @@
 export function listDate(date: Date): string {
   const month = String(date.getUTCMonth() + 1).padStart(2, '0');
   const day = String(date.getUTCDate()).padStart(2, '0');
-  return `${month}/${day}`;
+  return `${month}.${day}`;
 }
 
 export function fullDate(date: Date): string {
