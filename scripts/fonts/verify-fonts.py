@@ -132,13 +132,28 @@ def main() -> None:
         rel = page.relative_to(DIST)
         bad = []
         total = 0
+        # 独立判据：先不管字重，只看「这页所有汉字是否都在任何一份切片里」。
+        # 少字这一类错，字重分类可能一起吃错，所以这条单独算一遍。
+        all_cjk = {ord(ch) for chars in weights.values() for ch in chars if is_cjk(ch)}
+        uncovered = sorted(all_cjk - covered)
+        if uncovered:
+            sample = "".join(chr(c) for c in uncovered[:12])
+            bad.append(
+                f"有 {len(uncovered)} 个字不在任何切片里（如「{sample}」）。"
+                "如果它们在代码块里：`.prose code` 固定 400，而全站只有 600/700 中文字重——"
+                "要么去掉那条 font-weight: 400，要么把中文移出代码块；否则会回落到系统宋体。"
+            )
         for weight, chars in sorted(weights.items()):
             cjk = {ord(ch) for ch in chars if is_cjk(ch)}
             total += len(cjk)
             allowed = by_weight.get(str(weight), set())
             missing = sorted(cjk - allowed)
             if missing:
-                bad.append(f"{weight}: 缺 {missing[:6]}")
+                sample = "".join(chr(c) for c in missing[:8])
+                hint = ""
+                if str(weight) == "400":
+                    hint = "（400 档只有代码块用；若这些字在 <code>/<pre> 里，见上面的改法）"
+                bad.append(f"{weight} 字重缺「{sample}」{hint}")
         status = "✓" if not bad else "✗"
         print(f"{status} {rel}: {total} 个汉字" + ("，" + "；".join(bad) if bad else ""))
         problems += 1 if bad else 0
