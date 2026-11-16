@@ -80,6 +80,23 @@ def face_blocks(css_text: str) -> list[dict]:
     return blocks
 
 
+def check_light_weights(css_text: str) -> list[str]:
+    """全站只有 600/700 两档中文字重。出现 400/500 的普通声明，就意味着
+    Libertinus regular（25.6 KB）会被重新下载——这条把那种回退变成构建失败。
+    `code`/`pre` 例外：等宽字体被钉在 400，防止合成假粗体。
+    """
+    problems: list[str] = []
+    for m in re.finditer(r"([^{}]+)\{([^{}]*)\}", css_text):
+        selector, body = m.group(1).strip(), m.group(2)
+        if selector.startswith("@font-face") or "font-weight" not in body:
+            continue
+        if re.search(r"font-weight:\s*(400|500)\b", body):
+            if any(tag in selector for tag in ("code", "pre", "kbd", "samp")):
+                continue
+            problems.append(selector[:80])
+    return problems
+
+
 def main() -> None:
     pages = sorted(DIST.rglob("*.html"))
     if not pages:
@@ -92,8 +109,11 @@ def main() -> None:
     classify_weights = load_classifier()
 
     blocks = []
+    light: list[str] = []
     for css in css_files:
-        blocks.extend(face_blocks(css.read_text(encoding="utf-8")))
+        text = css.read_text(encoding="utf-8")
+        blocks.extend(face_blocks(text))
+        light.extend(check_light_weights(text))
     if not blocks:
         sys.exit("error: 构建产物里找不到 Noto Serif SC 的 @font-face")
 
@@ -115,6 +135,16 @@ def main() -> None:
             print(f"✗ {path.name}: unicode-range 与 cmap 不一致，缺 {miss} 多 {extra}")
             problems += 1
     print(f"faces: {len(blocks)} 个，range/cmap 一致 {len(blocks) - problems}/{len(blocks)}")
+
+    # 3) 全站只有 600/700：多出 400/500 的普通声明会让西文 regular 重新被下载。
+    if light:
+        print("✗ 构建产物里出现 400/500 字重的普通声明（会让 Libertinus regular 25.6 KB 重新下载）：")
+        for sel in sorted(set(light)):
+            print(f"    {sel}")
+        print("    改法：把该选择器改成 600，或改用颜色分层次；code/pre 内的 400 是允许的。")
+        problems += 1
+    else:
+        print("✓ 全站没有 400/500 的普通字重声明（code/pre 例外）")
 
     by_weight: dict[str, set[int]] = {}
     for b in blocks:
