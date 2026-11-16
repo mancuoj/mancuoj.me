@@ -329,6 +329,33 @@
   transition: opacity 0.15s ease;
 }
 
+/* 文章页 meta 里的标签：颜色只由小圆点承载，文字只变深浅，和标签页保持一致。 */
+.tag-dot-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tag-dot-link::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: var(--tag, var(--muted));
+  opacity: 0.5;
+  transition: opacity 150ms ease;
+}
+
+.tag-dot-link:hover::before {
+  opacity: 1;
+}
+
+/* hover 染色：把标签色往当前文字色拉 40%，两种主题都自动可读；
+   直接把文字设成原色或调低 opacity 都会掉对比度（黄/灰在浅底下几乎看不见）。 */
+.tag-dot-link:hover {
+  color: color-mix(in oklab, var(--tag, var(--muted)) 40%, var(--fg));
+}
+
 .tag-filter-item--all::before {
   display: none;
 }
