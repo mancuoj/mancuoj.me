@@ -10,7 +10,7 @@ const onTags = path === '/tags';
     <img src="/avatar-48.webp" alt="" width="24" height="24" class="size-6 rounded-full" />
     <span class="text-[15px] font-semibold">{site.title}</span>
   </a>
-  <nav class="flex items-center gap-5 text-sm text-muted" aria-label="主导航">
+  <nav class="flex items-center gap-5 text-[15px] text-muted" aria-label="主导航">
     <a
       href="/tags"
       class:list={['transition-colors hover:text-fg', onTags && 'text-fg']}
