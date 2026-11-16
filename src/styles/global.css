@@ -352,8 +352,17 @@
 
 /* hover 染色：把标签色往当前文字色拉 40%，两种主题都自动可读；
    直接把文字设成原色或调低 opacity 都会掉对比度（黄/灰在浅底下几乎看不见）。 */
+/* hover 染色：把标签色往当前文字色拉 40%，两种主题都自动可读。
+   混色只在支持 color-mix 的浏览器里生效；不支持的退回 --muted，
+   而不是标签原色（黄 #e4e669 在浅底下对比度只有 1.27:1）。 */
 .tag-dot-link:hover {
-  color: color-mix(in oklab, var(--tag, var(--muted)) 40%, var(--fg));
+  color: var(--hover, var(--muted));
+}
+
+@supports (color: color-mix(in lab, red, red)) {
+  .tag-dot-link:hover {
+    --hover: color-mix(in oklab, var(--tag, var(--muted)) 40%, var(--fg));
+  }
 }
 
 .tag-filter-item--all::before {
