@@ -3,10 +3,10 @@
 
 :root {
   --bg: #fafaf9;
-  --fg: #1c1c1a;
-  --body: #333330;
-  --muted: #5f5f58;
-  --faint: #72726b;
+  --fg: #21201a;
+  --body: #3e3d37;
+  --muted: #585751;
+  --faint: #73726c;
   --line: #e9e9e6;
   --surface: #ffffff;
   --subtle: #f3f3f1;
@@ -16,10 +16,10 @@
 
 [data-theme="dark"] {
   --bg: #111110;
-  --fg: #ececea;
-  --body: #d5d5d3;
-  --muted: #b3b3ab;
-  --faint: #8c8c85;
+  --fg: #eaeae6;
+  --body: #c0c0bc;
+  --muted: #9c9c98;
+  --faint: #7d7d79;
   --line: #262624;
   --surface: #171716;
   --subtle: #1c1c1b;
