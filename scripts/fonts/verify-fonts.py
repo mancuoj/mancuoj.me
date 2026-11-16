@@ -6,6 +6,19 @@
     pnpm verify:fonts
 
 任何一项不满足都会以非零退出码结束，并列出页 / 字 / 文件。
+
+自检与探针（改字体/切片的人请照做）：
+
+    python3 scripts/fonts/verify-fonts.py --selftest   # 只验守卫逻辑，不需要 dist
+
+`--selftest` 保证「正则和放行规则没坏」；它管不了「构建管线是否还吐出可扫的 CSS」。
+后者要用探针法，因为**守卫的失效是静默的**——管线一变，它照样报「干净」：
+
+1. 临时加一条**不可被合并**的违规：新建选择器（如 `.probe-test { font-weight: 400 }`），
+   不要往已存在的规则里追加同名字重（压缩器会去重，探针根本进不了产物）；
+2. `pnpm build` 后先在 `dist/_astro/*.css` 里 `grep font-weight:400`，**确认探针真的出现了**；
+3. 再跑本脚本，确认它 exit 1 并点名 `.probe-test`；
+4. 删掉探针，重跑一次确认回到绿色。
 """
 from __future__ import annotations
 
@@ -97,7 +110,20 @@ def check_light_weights(css_text: str) -> list[str]:
     return problems
 
 
+def selftest() -> None:
+    assert check_light_weights(".probe{font-weight:400}") == [".probe"], "普通选择器的 400 应被拦"
+    assert check_light_weights(".probe{font-weight:500}") == [".probe"], "普通选择器的 500 应被拦"
+    assert check_light_weights("code{font-weight:400}") == [], "code 里的 400 应放行"
+    assert check_light_weights(".prose pre{font-weight:400}") == [], "pre 里的 400 应放行"
+    assert check_light_weights(".a{font-weight:600}") == [], "600 不该报"
+    assert check_light_weights("@font-face{font-weight:400;src:url(/x.woff2)}") == [], "字体声明不该报"
+    print("✓ guard selftest")
+
+
 def main() -> None:
+    if "--selftest" in sys.argv:
+        selftest()
+        return
     pages = sorted(DIST.rglob("*.html"))
     if not pages:
         sys.exit("error: dist 里没有 HTML，先跑 pnpm build")
