@@ -1,7 +1,7 @@
 <button
   type="button"
   id="theme-switch"
-  class="text-muted transition-colors hover:text-fg"
+  class="cursor-pointer text-muted transition-colors hover:text-fg"
   aria-label="切换主题"
   title="切换主题"
 >
@@ -38,10 +38,13 @@
 <script>
   const root = document.documentElement;
   const switcher = document.getElementById('theme-switch');
+  const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+  const media = window.matchMedia?.('(prefers-color-scheme: dark)');
 
-  function sync() {
-    const dark = root.dataset.theme === 'dark';
-    const text = dark ? '切换到浅色' : '切换到深色';
+  function apply(theme: 'light' | 'dark') {
+    root.dataset.theme = theme;
+    themeColor?.setAttribute('content', theme === 'dark' ? '#111110' : '#fafaf9');
+    const text = theme === 'dark' ? '切换到浅色' : '切换到深色';
     switcher?.setAttribute('aria-label', text);
     switcher?.setAttribute('title', text);
     const sr = switcher?.querySelector('.sr-only');
@@ -50,12 +53,19 @@
 
   switcher?.addEventListener('click', () => {
     const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-    root.dataset.theme = next;
     try {
       localStorage.setItem('theme', next);
     } catch {}
-    sync();
+    apply(next);
   });
 
-  sync();
+  media?.addEventListener('change', (event) => {
+    try {
+      const stored = localStorage.getItem('theme');
+      if (stored === 'dark' || stored === 'light') return;
+    } catch {}
+    apply(event.matches ? 'dark' : 'light');
+  });
+
+  apply(root.dataset.theme === 'dark' ? 'dark' : 'light');
 </script>

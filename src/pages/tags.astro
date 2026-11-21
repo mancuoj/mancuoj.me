@@ -1,8 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import FooterIcons from '../components/FooterIcons.astro';
+import PostRow from '../components/PostRow.astro';
 import { getPosts, tagsIndex } from '../lib/posts';
-import { listDate } from '../lib/dates';
 
 const posts = await getPosts();
 const tags = tagsIndex(posts);
@@ -32,20 +31,11 @@ const tags = tagsIndex(posts);
     {
       posts.map((post) => (
         <li class="post-item" data-tags={post.tags.map((tag) => tag.slug).join(' ')}>
-          <div class="flex items-baseline justify-between gap-6 py-1">
-            <a href={post.url} class="text-[17px] leading-6 text-fg transition-colors hover:text-muted">
-              {post.title}
-            </a>
-            <time datetime={post.date} class="shrink-0 text-[14px] text-faint tabular-nums">
-              {listDate(post.created)}
-            </time>
-          </div>
+          <PostRow post={post} />
         </li>
       ))
     }
   </ol>
-
-  <FooterIcons />
 </BaseLayout>
 
 <script>

@@ -1,6 +1,6 @@
 ---
 import type { YearGroup } from '../lib/posts';
-import { listDate } from '../lib/dates';
+import PostRow from './PostRow.astro';
 
 interface Props {
   groups: YearGroup[];
@@ -9,32 +9,23 @@ interface Props {
 const { groups } = Astro.props;
 ---
 
-<section class="mt-10 space-y-10" aria-label="文章">
-  {
-    groups.map((group) => (
-      <section class="grid gap-3 sm:grid-cols-[3.5rem_minmax(0,1fr)] sm:gap-x-6">
-        <h2 class="text-sm text-muted tabular-nums sm:sticky sm:top-4 sm:self-start sm:leading-7">
-          {group.year}
-        </h2>
-        <ol class="min-w-0">
-          {group.posts.map((post) => (
-            <li>
-              <a
-                href={post.url}
-                class="post-link group flex items-baseline justify-between gap-6 py-1 leading-6"
-              >
-                <span class="text-[17px] text-fg transition-colors group-hover:text-muted">
-                  {post.title}
-                  {post.pinned && <span class="ml-1 text-[0.72em] align-[0.12em]">✳</span>}
-                </span>
-                <time datetime={post.date} class="shrink-0 whitespace-nowrap text-[14px] text-faint tabular-nums">
-                  {listDate(post.created)}
-                </time>
-              </a>
-            </li>
-          ))}
-        </ol>
-      </section>
-    ))
-  }
-</section>
+{
+  groups.length > 0 && (
+    <section class="mt-10 space-y-10" aria-label="文章">
+      {groups.map((group) => (
+        <section class="grid gap-3 sm:grid-cols-[3.5rem_minmax(0,1fr)] sm:gap-x-6">
+          <h2 class="text-sm text-muted tabular-nums sm:sticky sm:top-4 sm:self-start sm:leading-7">
+            {group.year}
+          </h2>
+          <ol class="min-w-0">
+            {group.posts.map((post) => (
+              <li>
+                <PostRow post={post} showPinned />
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))}
+    </section>
+  )
+}

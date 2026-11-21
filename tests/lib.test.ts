@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { fullDate, isoDate, listDate } from '../src/lib/dates';
 import type { Post, Tag } from '../src/lib/posts';
 import { groupByYear, tagsIndex } from '../src/lib/posts';
+import { canonicalPath } from '../src/lib/site';
 import { plainExcerpt, slugify } from '../src/lib/text';
 
 function post(number: number, year = '2026', tags: Tag[] = []): Post {
@@ -73,5 +74,15 @@ describe('tagsIndex', () => {
       post(2, '2026', [{ name: 'a', slug: 'a', color: '999999' }]),
     ];
     expect(tagsIndex(posts).map((tag) => tag.slug)).toEqual(['a', 'b']);
+  });
+});
+
+describe('canonicalPath', () => {
+  it('normalizes file-format Astro output paths', () => {
+    expect(canonicalPath('/')).toBe('/');
+    expect(canonicalPath('/index.html')).toBe('/');
+    expect(canonicalPath('/tags.html')).toBe('/tags');
+    expect(canonicalPath('/tags/')).toBe('/tags');
+    expect(canonicalPath('/post/10.html')).toBe('/post/10');
   });
 });
