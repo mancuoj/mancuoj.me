@@ -358,6 +358,20 @@
   opacity: 1;
 }
 
+/* 深色底上 0.5 透明度会把标签色压成泥色（靛蓝几乎消失），
+   提到 0.8 才和浅色下的淡彩分量相当；hover / 选中仍逐级变亮。 */
+[data-theme="dark"] .tag-filter-item::before {
+  opacity: 0.8;
+}
+
+[data-theme="dark"] .tag-filter-item:hover::before {
+  opacity: 0.9;
+}
+
+[data-theme="dark"] .tag-filter-item[aria-pressed="true"]::before {
+  opacity: 1;
+}
+
 .theme-sun {
   display: none;
 }
