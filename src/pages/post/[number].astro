@@ -34,12 +34,11 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
   article={{ publishedTime }}
   hideHeader
   hideFooter
-  bodyText
 >
   <article class="relative">
     <a
       href="/"
-      class="post-back mb-8 inline-flex items-center gap-1.5 whitespace-nowrap text-sm text-muted transition-colors hover:text-fg lg:absolute lg:top-0 lg:right-full lg:mb-0 lg:mr-16 lg:h-[27.5px]"
+      class="post-back mb-8 inline-flex items-center gap-1.5 whitespace-nowrap text-sm text-muted transition-colors hover:text-fg lg:absolute lg:top-0 lg:right-full lg:mb-0 lg:mr-16 lg:h-[26px]"
     >
       <svg
         viewBox="0 0 24 24"
@@ -59,8 +58,8 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
     </a>
 
     <header class="mb-8">
-      <h1 class="text-[22px] font-semibold leading-tight tracking-tight text-balance">{post.title}</h1>
-      <div class="mt-2 flex flex-wrap items-baseline gap-x-1.5 text-[14px] text-muted">
+      <h1 class="text-[21px] font-semibold leading-tight tracking-tight text-balance">{post.title}</h1>
+      <div class="mt-2 flex flex-wrap items-baseline gap-x-1.5 text-[13.5px] text-muted">
         <time datetime={post.date}>{fullDate(post.created)}</time>
         {
           post.tags.map((tag) => (
@@ -100,8 +99,8 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
         >
           {previous && (
             <a href={previous.url} class="post-nav-link flex flex-col gap-1">
-              <span class="text-sm text-muted">Previous</span>
-              <span class="text-base leading-[1.75] text-fg transition-colors hover:text-muted">
+              <span class="text-[13px] text-muted">Previous</span>
+              <span class="text-[15px] leading-[1.7] text-fg transition-colors hover:text-muted">
                 {previous.title}
               </span>
             </a>
@@ -111,8 +110,8 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
               href={nextPost.url}
               class="post-nav-link flex flex-col gap-1 sm:col-start-2 sm:items-end sm:text-right"
             >
-              <span class="text-sm text-muted">Next</span>
-              <span class="text-base leading-[1.75] text-fg transition-colors hover:text-muted">
+              <span class="text-[13px] text-muted">Next</span>
+              <span class="text-[15px] leading-[1.7] text-fg transition-colors hover:text-muted">
                 {nextPost.title}
               </span>
             </a>

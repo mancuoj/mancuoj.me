@@ -1,24 +1,15 @@
 ---
 import { canonicalPath, site } from '../lib/site';
+import ThemeToggle from './ThemeToggle.astro';
 
 const path = canonicalPath(Astro.url.pathname);
 const onHome = path === '/';
-const onTags = path === '/tags';
 ---
 
-<header class="flex items-center justify-between">
+<header class="flex items-center justify-between gap-4">
   <a href="/" class="flex items-center gap-2.5" aria-current={onHome ? 'page' : undefined}>
     <img src="/avatar-48.webp" alt="" width="24" height="24" decoding="async" class="size-6 rounded-full" />
-    <span class="text-[15px] font-semibold">{site.title}</span>
+    <span class="text-[17px] font-semibold tracking-tight text-fg">{site.title}</span>
   </a>
-  <nav class="flex items-center gap-5 text-[15px] text-muted" aria-label="主导航">
-    <a
-      href="/tags"
-      class:list={['transition-colors hover:text-fg', onTags && 'text-fg']}
-      aria-current={onTags ? 'page' : undefined}
-    >
-      标签
-    </a>
-    {site.showRss && <a href="/rss.xml" class="transition-colors hover:text-fg">RSS</a>}
-  </nav>
+  <ThemeToggle />
 </header>

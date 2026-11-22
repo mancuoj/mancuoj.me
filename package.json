@@ -9,8 +9,6 @@
     "check": "astro check",
     "test": "vitest run",
     "backup": "node scripts/backup.mjs",
-    "fonts": "python3 scripts/fonts/subset-fonts.py",
-    "verify:fonts": "python3 scripts/fonts/verify-fonts.py",
     "verify": "pnpm check && pnpm test",
     "verify:all": "pnpm verify && node scripts/verify-all.mjs"
   },

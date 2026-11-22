@@ -3,7 +3,7 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import FooterIcons from '../components/FooterIcons.astro';
 import { canonicalPath, site } from '../lib/site';
-import { preloadBodyFont, preloadCjkFont, preloadFont } from '../lib/font-preload';
+import { preloadFont } from '../lib/font-preload';
 
 interface Props {
   title?: string;
@@ -12,8 +12,6 @@ interface Props {
   article?: { publishedTime: string };
   hideHeader?: boolean;
   hideFooter?: boolean;
-  /** 正文页正文是 600，预载 semibold；其他页面预载 regular。 */
-  bodyText?: boolean;
 }
 
 const defaultImage = new URL('/avatar.png', site.homeUrl).toString();
@@ -25,10 +23,7 @@ const {
   article,
   hideHeader = false,
   hideFooter = false,
-  bodyText = false,
 } = Astro.props;
-
-const preloadLatin = bodyText ? preloadBodyFont : preloadFont;
 
 const pageTitle = title ? `${title} · ${site.title}` : site.title;
 const canonical = new URL(canonicalPath(Astro.url.pathname), site.homeUrl).toString();
@@ -44,8 +39,7 @@ const canonical = new URL(canonicalPath(Astro.url.pathname), site.homeUrl).toStr
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon-32.png" />
-    <link rel="preload" href={preloadLatin} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={preloadCjkFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={preloadFont} as="font" type="font/woff2" crossorigin />
     <link rel="alternate" type="application/rss+xml" title={site.title} href="/rss.xml" />
     <meta name="theme-color" content="#fafafa" />
     <meta property="og:type" content={article ? 'article' : 'website'} />

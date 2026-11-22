@@ -10,12 +10,12 @@ interface Props {
 const { post, showPinned = false } = Astro.props;
 ---
 
-<a href={post.url} class="group flex items-baseline justify-between gap-6 py-1 leading-6">
-  <span class="text-[17px] text-fg transition-colors group-hover:text-muted">
+<a href={post.url} class="group flex items-baseline justify-between gap-6 py-[5px] leading-6">
+  <span class="text-[15.5px] text-fg transition-colors group-hover:text-muted">
     {post.title}
     {showPinned && post.pinned && <span class="ml-1 text-[0.72em] align-[0.12em]">✳</span>}
   </span>
-  <time datetime={post.date} class="shrink-0 whitespace-nowrap text-[14px] text-faint tabular-nums">
+  <time datetime={post.date} class="shrink-0 whitespace-nowrap text-[13.5px] text-faint tabular-nums">
     {listDate(post.created)}
   </time>
 </a>
