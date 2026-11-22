@@ -47,7 +47,7 @@ const canonical = new URL(canonicalPath(Astro.url.pathname), site.homeUrl).toStr
     <link rel="preload" href={preloadLatin} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={preloadCjkFont} as="font" type="font/woff2" crossorigin />
     <link rel="alternate" type="application/rss+xml" title={site.title} href="/rss.xml" />
-    <meta name="theme-color" content="#fafaf9" />
+    <meta name="theme-color" content="#fafafa" />
     <meta property="og:type" content={article ? 'article' : 'website'} />
     <meta property="og:title" content={title ?? site.title} />
     <meta property="og:description" content={description} />
@@ -64,7 +64,7 @@ const canonical = new URL(canonicalPath(Astro.url.pathname), site.homeUrl).toStr
             stored === 'dark' || stored === 'light' ? stored : prefersDark ? 'dark' : 'light';
           document.documentElement.dataset.theme = theme;
           const meta = document.querySelector('meta[name="theme-color"]');
-          if (meta) meta.setAttribute('content', theme === 'dark' ? '#111110' : '#fafaf9');
+          if (meta) meta.setAttribute('content', theme === 'dark' ? '#111111' : '#fafafa');
         } catch {}
       })();
     </script>

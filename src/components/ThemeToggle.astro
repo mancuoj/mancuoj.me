@@ -43,7 +43,7 @@
 
   function apply(theme: 'light' | 'dark') {
     root.dataset.theme = theme;
-    themeColor?.setAttribute('content', theme === 'dark' ? '#111110' : '#fafaf9');
+    themeColor?.setAttribute('content', theme === 'dark' ? '#111111' : '#fafafa');
     const text = theme === 'dark' ? '切换到浅色' : '切换到深色';
     switcher?.setAttribute('aria-label', text);
     switcher?.setAttribute('title', text);
