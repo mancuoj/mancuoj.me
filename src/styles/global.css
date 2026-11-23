@@ -44,15 +44,15 @@
 }
 
 .prose a:any-link {
+  color: var(--fg);
   text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--fg) 24%, transparent);
+  text-decoration-color: color-mix(in srgb, var(--fg) 50%, transparent);
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
   transition: color 0.15s ease, text-decoration-color 0.15s ease;
 }
 
 .prose a:any-link:hover {
-  color: var(--muted);
   text-decoration-color: currentColor;
 }
 
