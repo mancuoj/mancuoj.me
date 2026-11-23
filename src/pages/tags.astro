@@ -10,14 +10,15 @@ const tags = tagsIndex(posts);
 <BaseLayout title="标签">
   <h1 class="sr-only">标签</h1>
 
-  <div class="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2" id="tag-filter" role="group" aria-label="按标签筛选">
+  <div class="mt-12 flex flex-wrap items-center gap-x-5 gap-y-2 sm:mt-16" id="tag-filter" role="group" aria-label="按标签筛选">
+    <button class="tag-filter-item tag-filter-item--all" type="button" data-tag="*" aria-pressed="true">All</button>
     {
-      tags.map((tag, index) => (
+      tags.map((tag) => (
         <button
           class="tag-filter-item"
           type="button"
           data-tag={tag.slug}
-          aria-pressed={index === 0 ? 'true' : 'false'}
+          aria-pressed="false"
           style={`--tag: #${tag.color}`}
         >
           {tag.name}
@@ -44,21 +45,20 @@ const tags = tagsIndex(posts);
   if (root && list) {
     const buttons = [...root.querySelectorAll<HTMLButtonElement>('button')];
     const items = [...list.querySelectorAll<HTMLElement>('.post-item')];
-    const fallback = buttons[0]?.dataset.tag ?? '';
-    let active = '';
+    let active = '*';
 
     const hashTag = () => decodeURIComponent(location.hash.slice(1));
 
     const apply = () => {
       for (const item of items) {
         const tags = ` ${item.dataset.tags ?? ''} `;
-        item.hidden = !active || !tags.includes(` ${active} `);
+        item.hidden = !(active === '*' || tags.includes(` ${active} `));
       }
     };
 
     const select = (slug: string, push: boolean) => {
-      const next = buttons.some((button) => button.dataset.tag === slug) ? slug : fallback;
-      if (!next || next === active) return;
+      const next = buttons.some((button) => button.dataset.tag === slug) ? slug : '*';
+      if (next === active) return;
       active = next;
 
       for (const button of buttons) {
@@ -67,18 +67,18 @@ const tags = tagsIndex(posts);
 
       apply();
       if (push) {
-        history.pushState(null, '', `/tags#${active}`);
+        history.pushState(null, '', active === '*' ? '/tags' : `/tags#${active}`);
       }
     };
 
     root.addEventListener('click', (event) => {
       const chip = (event.target as HTMLElement).closest<HTMLButtonElement>('button');
-      if (chip) select(chip.dataset.tag ?? fallback, true);
+      if (chip) select(chip.dataset.tag ?? '*', true);
     });
 
-    window.addEventListener('popstate', () => select(hashTag(), false));
-    window.addEventListener('hashchange', () => select(hashTag(), false));
+    window.addEventListener('popstate', () => select(hashTag() || '*', false));
+    window.addEventListener('hashchange', () => select(hashTag() || '*', false));
 
-    select(hashTag(), false);
+    select(hashTag() || '*', false);
   }
 </script>

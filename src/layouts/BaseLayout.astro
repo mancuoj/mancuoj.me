@@ -3,7 +3,7 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import FooterIcons from '../components/FooterIcons.astro';
 import { canonicalPath, site } from '../lib/site';
-import { preloadFont } from '../lib/font-preload';
+import { preloadCjkFont, preloadFont } from '../lib/font-preload';
 
 interface Props {
   title?: string;
@@ -40,6 +40,7 @@ const canonical = new URL(canonicalPath(Astro.url.pathname), site.homeUrl).toStr
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon-32.png" />
     <link rel="preload" href={preloadFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={preloadCjkFont} as="font" type="font/woff2" crossorigin />
     <link rel="alternate" type="application/rss+xml" title={site.title} href="/rss.xml" />
     <meta name="theme-color" content="#fafafa" />
     <meta property="og:type" content={article ? 'article' : 'website'} />

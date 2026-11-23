@@ -49,11 +49,32 @@ jobs:
           node-version: 24
           cache: pnpm
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: scripts/fonts/requirements.txt
+
+      - name: Cache font sources
+        uses: actions/cache@v4
+        with:
+          path: .cache/fonts
+          key: fonts-${{ hashFiles('scripts/fonts/subset-fonts.py', 'scripts/fonts/requirements.txt') }}
+          restore-keys: fonts-
+
+      - name: Install font tools
+        run: pip install -r scripts/fonts/requirements.txt
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Check and test
-        run: pnpm verify
+        run: |
+          pnpm check
+          pnpm test
+          # 零依赖的守卫自检：不需要 dist，也不需要 fonttools
+          python3 scripts/fonts/verify-fonts.py --selftest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -61,6 +82,31 @@ jobs:
         run: pnpm build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Refresh font subsets
+        run: |
+          pnpm fonts
+          git add public/fonts src/styles/fonts.css src/lib/font-preload.ts
+          if git diff --cached --quiet; then
+            echo "fonts up to date"
+            exit 0
+          fi
+          echo "fonts changed; rebuilding"
+          pnpm build
+          # 这一步会直接 commit 到 main，所以先验：坏字体不许进 main。
+          pnpm verify:fonts
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore(fonts): refresh subsets [skip ci]"
+            git push origin HEAD:main
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 兜底：PR 与「字体没变化」的路径不走上面那次校验，这里再验一遍。
+      - name: Verify font coverage
+        run: pnpm verify:fonts
 
       - name: Commit content backup
         if: github.event_name != 'pull_request'
