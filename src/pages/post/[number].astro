@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Icon from '../../components/Icon.astro';
+import ChatLinesIcon from '../../assets/icons/chat-lines.svg';
+import UndoIcon from '../../assets/icons/undo.svg';
 import { getPosts } from '../../lib/posts';
 import { fullDate } from '../../lib/dates';
 import type { Post } from '../../lib/posts';
@@ -40,20 +41,7 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
       href="/"
       class="post-back mb-8 inline-flex items-center gap-1.5 whitespace-nowrap text-sm text-muted transition-colors hover:text-fg lg:absolute lg:top-0 lg:right-full lg:mb-0 lg:mr-16 lg:h-[27.5px]"
     >
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="size-3.5"
-        aria-hidden="true"
-        focusable="false"
-      >
-        <path d="M9 14 4 9l5-5"></path>
-        <path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"></path>
-      </svg>
+      <UndoIcon class="size-3.5" aria-hidden="true" focusable="false" />
       返回
     </a>
 
@@ -84,7 +72,7 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
           target="_blank"
           rel="noopener"
         >
-          <Icon name="github-mark" class="size-3.5" />
+          <ChatLinesIcon class="size-3.5" aria-hidden="true" focusable="false" />
         </a>
       </div>
     </header>

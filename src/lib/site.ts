@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import raw from '../../config.json';
 
-export const ICON_NAMES = ['github', 'github-mark', 'x', 'rss', 'mail', 'bilibili'] as const;
+export const ICON_NAMES = ['github', 'x', 'rss', 'mail', 'bilibili'] as const;
 export type IconName = (typeof ICON_NAMES)[number];
 
 const schema = z.object({
