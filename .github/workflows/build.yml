@@ -50,14 +50,14 @@ jobs:
           cache: pnpm
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
           cache-dependency-path: scripts/fonts/requirements.txt
 
       - name: Cache font sources
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .cache/fonts
           key: fonts-${{ hashFiles('scripts/fonts/subset-fonts.py', 'scripts/fonts/requirements.txt') }}
@@ -99,6 +99,18 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git commit -m "chore(fonts): refresh subsets [skip ci]"
+            if ! git pull --rebase origin main; then
+              git rebase --abort || true
+              git reset --hard origin/main
+              pnpm build
+              pnpm fonts
+              git add public/fonts src/styles/fonts.css src/lib/font-preload.ts
+              if ! git diff --cached --quiet; then
+                pnpm build
+                pnpm verify:fonts
+                git commit -m "chore(fonts): refresh subsets [skip ci]"
+              fi
+            fi
             git push origin HEAD:main
           fi
         env:
@@ -119,6 +131,13 @@ jobs:
             echo "内容无变化，跳过提交"
           else
             git commit -m "chore: 更新内容备份 [skip ci]"
+            if ! git pull --rebase origin main; then
+              git rebase --abort || true
+              git reset --hard origin/main
+              node scripts/backup.mjs
+              git add backup
+              git diff --cached --quiet || git commit -m "chore: 更新内容备份 [skip ci]"
+            fi
             git push origin HEAD:main
           fi
         env:
