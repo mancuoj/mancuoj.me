@@ -2,6 +2,7 @@
   "name": "mancuoj-me",
   "type": "module",
   "private": true,
+  "packageManager": "pnpm@12.23.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",

@@ -10,7 +10,7 @@ updates:
       prefix: "chore"
       include: "scope"
     groups:
-      npm:
+      npm-deps:
         patterns: ["*"]
 
   # GitHub Actions 版本
@@ -22,5 +22,5 @@ updates:
       prefix: "chore"
       include: "scope"
     groups:
-      actions:
+      github-actions:
         patterns: ["*"]
