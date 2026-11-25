@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ChatLinesIcon from '../../assets/icons/chat-lines.svg';
+import GithubMarkIcon from '../../assets/icons/github-mark.svg';
 import UndoIcon from '../../assets/icons/undo.svg';
 import { getPosts } from '../../lib/posts';
 import { fullDate } from '../../lib/dates';
@@ -39,7 +39,7 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
   <article class="relative">
     <a
       href="/"
-      class="post-back mb-8 inline-flex items-center gap-1.5 whitespace-nowrap text-sm text-muted transition-colors hover:text-fg lg:absolute lg:top-0 lg:right-full lg:mb-0 lg:mr-16 lg:h-[27.5px]"
+      class="mb-8 inline-flex items-center gap-1.5 whitespace-nowrap text-sm text-muted transition-colors hover:text-fg lg:absolute lg:top-0 lg:right-full lg:mb-0 lg:mr-16 lg:h-[27.5px]"
     >
       <UndoIcon class="size-3.5" aria-hidden="true" focusable="false" />
       返回
@@ -47,8 +47,8 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
 
     <header class="mb-8">
       <h1 class="text-[24px] leading-[1.35] text-balance">{post.title}</h1>
-      <div class="mt-2 flex flex-wrap items-baseline gap-x-1.5 text-[14px] text-muted">
-        <time datetime={post.date}>{fullDate(post.created)}</time>
+      <div class="mt-2 flex flex-wrap items-center gap-x-0.5 text-[14px] text-muted">
+        <time datetime={post.date} class="-mr-[1.5px]">{fullDate(post.created)}</time>
         {
           post.tags.map((tag) => (
             <>
@@ -66,13 +66,13 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
         <span aria-hidden="true" class="text-faint">·</span>
         <a
           href={post.source}
-          class="-m-1.5 inline-flex items-center self-center p-1.5 text-muted transition-colors hover:text-fg"
+          class="-m-1.5 inline-flex items-center p-1.5 text-muted transition-colors hover:text-fg"
           aria-label="在 GitHub 上查看 issue"
           title="在 GitHub 上查看 issue"
           target="_blank"
           rel="noopener"
         >
-          <ChatLinesIcon class="size-3.5" aria-hidden="true" focusable="false" />
+          <GithubMarkIcon class="size-3.5" aria-hidden="true" focusable="false" />
         </a>
       </div>
     </header>
@@ -86,7 +86,7 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
           aria-label="文章导航"
         >
           {previous && (
-            <a href={previous.url} class="post-nav-link flex flex-col gap-1">
+            <a href={previous.url} class="flex flex-col gap-1">
               <span class="text-sm text-muted">Previous</span>
               <span class="text-base leading-[1.75] text-fg transition-colors hover:text-muted">
                 {previous.title}
@@ -96,7 +96,7 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
           {nextPost && (
             <a
               href={nextPost.url}
-              class="post-nav-link flex flex-col gap-1 sm:col-start-2 sm:items-end sm:text-right"
+              class="flex flex-col gap-1 sm:col-start-2 sm:items-end sm:text-right"
             >
               <span class="text-sm text-muted">Next</span>
               <span class="text-base leading-[1.75] text-fg transition-colors hover:text-muted">

@@ -3,7 +3,6 @@ import type { SvgComponent } from 'astro/types';
 import bilibili from '../assets/icons/bilibili.svg';
 import github from '../assets/icons/github.svg';
 import mail from '../assets/icons/mail.svg';
-import rss from '../assets/icons/rss.svg';
 import x from '../assets/icons/x.svg';
 import type { IconName } from '../lib/site';
 
@@ -17,7 +16,6 @@ const { name, class: className } = Astro.props;
 const icons: Record<IconName, SvgComponent> = {
   github,
   x,
-  rss,
   mail,
   bilibili,
 };
