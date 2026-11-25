@@ -12,6 +12,10 @@ updates:
     groups:
       npm-deps:
         patterns: ["*"]
+    ignore:
+      # astro check 目前仅支持到 TypeScript 6.x；待支持 TS 7.1+ / @astrojs/ts-content-mapper 后移除
+      - dependency-name: "typescript"
+        versions: [">= 7.0.0"]
 
   # GitHub Actions 版本
   - package-ecosystem: "github-actions"
