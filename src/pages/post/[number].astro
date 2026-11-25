@@ -48,11 +48,9 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
     <header class="mb-8">
       <h1 class="text-[24px] leading-[1.35] text-balance">{post.title}</h1>
       <div class="mt-2 flex flex-wrap items-center gap-x-0.5 text-[14px] text-muted">
-        <time datetime={post.date} class="-mr-[1.5px]">{fullDate(post.created)}</time>
         {
           post.tags.map((tag) => (
             <>
-              <span aria-hidden="true" class="text-faint">·</span>
               <a
                 href={`/tags#${tag.slug}`}
                 class="post-tag transition-colors"
@@ -60,9 +58,11 @@ const publishedTime = new Date(post.created.getTime() - site.timezone * 3600 * 1
               >
                 {tag.name}
               </a>
+              <span aria-hidden="true" class="text-faint">·</span>
             </>
           ))
         }
+        <time datetime={post.date} class="-mr-[1.5px]">{fullDate(post.created)}</time>
         <span aria-hidden="true" class="text-faint">·</span>
         <a
           href={post.source}
