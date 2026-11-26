@@ -10,5 +10,8 @@ const groups = groupByYear(posts);
 
 <BaseLayout>
   <h1 class="sr-only">{site.title}</h1>
+  <p class="mt-12 max-w-md text-[16px] leading-[1.625] text-muted text-pretty sm:mt-16">
+    {site.subtitle}
+  </p>
   <PostList groups={groups} />
 </BaseLayout>
