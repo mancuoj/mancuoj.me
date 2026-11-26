@@ -3,27 +3,29 @@
 
 :root {
   --bg: #fafafa;
-  --fg: #262626;
-  --body: #404040;
-  --muted: #686868;
-  --faint: #737373;
+  --fg: #141414;
+  --body: #4a4a4a;
+  --muted: #737373;
+  --faint: #8c8c8c;
+  --accent: #0066cc;
   --line: rgb(0 0 0 / 8%);
   --surface: #ffffff;
   --subtle: rgb(0 0 0 / 4%);
-  --select: color-mix(in srgb, var(--fg) 12%, transparent);
+  --select: color-mix(in srgb, var(--accent) 14%, transparent);
   color-scheme: light;
 }
 
 [data-theme="dark"] {
   --bg: #111111;
   --fg: #f5f5f5;
-  --body: #d4d4d4;
-  --muted: #9e9e9e;
-  --faint: #818181;
-  --line: rgb(255 255 255 / 6%);
-  --surface: #1b1b1b;
-  --subtle: rgb(255 255 255 / 4%);
-  --select: color-mix(in srgb, var(--fg) 12%, transparent);
+  --body: #c4c4c4;
+  --muted: #8f8f8f;
+  --faint: #737373;
+  --accent: #4da3ff;
+  --line: rgb(255 255 255 / 7%);
+  --surface: #1a1a1a;
+  --subtle: rgb(255 255 255 / 5%);
+  --select: color-mix(in srgb, var(--accent) 22%, transparent);
   color-scheme: dark;
 }
 
@@ -33,6 +35,7 @@
   --color-body: var(--body);
   --color-muted: var(--muted);
   --color-faint: var(--faint);
+  --color-accent: var(--accent);
   --color-line: var(--line);
   --color-surface: var(--surface);
   --color-subtle: var(--subtle);
@@ -46,13 +49,14 @@
 .prose a:any-link {
   color: var(--fg);
   text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--fg) 50%, transparent);
+  text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
   text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
+  text-underline-offset: 4px;
   transition: color 0.15s ease, text-decoration-color 0.15s ease;
 }
 
 .prose a:any-link:hover {
+  color: var(--accent);
   text-decoration-color: currentColor;
 }
 
@@ -91,16 +95,16 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--fg);
+    outline: 2px solid var(--accent);
     outline-offset: 2px;
-    border-radius: 2px;
+    border-radius: 4px;
   }
 }
 
 /* --- 文章正文：egoist page.css ------------------------------------------- */
 .prose {
   font-size: 17px;
-  line-height: 1.7;
+  line-height: 1.8;
   line-break: strict;
   color: var(--body);
   text-align: left;
@@ -120,7 +124,7 @@
 }
 
 .prose p + p {
-  margin-top: 0.65em;
+  margin-top: 1em;
 }
 
 .prose blockquote p,
@@ -129,26 +133,26 @@
 }
 
 .prose h2 {
-  margin: 2.2em 0 0.6em;
-  font-size: 1.2em;
-  font-weight: 400;
-  line-height: 1.25;
-  color: var(--fg);
-}
-
-.prose h3 {
-  margin: 1.8em 0 0.5em;
-  font-size: 1.1em;
+  margin: 2.6em 0 0.8em;
+  font-size: 1.25em;
   font-weight: 400;
   line-height: 1.3;
   color: var(--fg);
 }
 
-.prose h4 {
-  margin: 1.5em 0 0.4em;
-  font-size: 1em;
+.prose h3 {
+  margin: 2em 0 0.6em;
+  font-size: 1.125em;
   font-weight: 400;
   line-height: 1.35;
+  color: var(--fg);
+}
+
+.prose h4 {
+  margin: 1.6em 0 0.5em;
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 1.4;
   color: var(--fg);
 }
 
@@ -170,8 +174,8 @@
 }
 
 .prose :is(ul, ol) {
-  margin: 0.65em 0;
-  padding-left: 1.6em;
+  margin: 1em 0;
+  padding-left: 1.5em;
 }
 
 .prose ul {
@@ -183,7 +187,7 @@
 }
 
 .prose li {
-  margin: 0.25em 0;
+  margin: 0.4em 0;
 }
 
 .prose li::marker {
@@ -191,19 +195,19 @@
 }
 
 .prose :is(ul, ol) :is(ul, ol) {
-  margin: 6px 0;
+  margin: 8px 0;
 }
 
 .prose blockquote {
-  margin: 1.1em 0;
-  padding-left: 1em;
-  border-left: 1px solid color-mix(in srgb, var(--fg) 20%, transparent);
+  margin: 1.5em 0;
+  padding-left: 16px;
+  border-left: 2px solid var(--line);
   color: var(--muted);
 }
 
 .prose hr {
-  margin: 48px auto;
-  width: 40px;
+  margin: 64px auto;
+  width: 48px;
   border: 0;
   border-top: 1px solid var(--line);
 }
@@ -211,8 +215,8 @@
 .prose img {
   max-width: 100%;
   height: auto;
-  margin: 32px 0;
-  border-radius: 8px;
+  margin: 40px 0;
+  border-radius: 12px;
   box-shadow: 0 0 0 1px oklch(0 0 0 / 0.1);
 }
 
@@ -231,11 +235,11 @@
 }
 
 .prose pre {
-  margin: 24px 0;
-  padding: 20px;
+  margin: 32px 0;
+  padding: 24px;
   overflow-x: auto;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 12px;
   background-color: var(--surface) !important;
   font-size: 13.5px;
   line-height: 1.65;
@@ -252,10 +256,10 @@
   display: block;
   width: fit-content;
   max-width: 100%;
-  margin: 24px 0;
+  margin: 32px 0;
   overflow-x: auto;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 12px;
   border-collapse: separate;
   border-spacing: 0;
   font-size: 14px;
@@ -263,7 +267,7 @@
 
 .prose th,
 .prose td {
-  padding: 8px 14px;
+  padding: 12px 16px;
   border: 0;
   border-bottom: 1px solid var(--line);
   text-align: left;
@@ -302,10 +306,10 @@
 .tag-filter-item {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   cursor: pointer;
   color: var(--faint);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.02em;
   line-height: 1.5;
   transition: color 0.15s ease;
@@ -313,8 +317,8 @@
 
 .tag-filter-item::before {
   content: "";
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   border-radius: 9999px;
   background: var(--tag, var(--muted));
   opacity: 0.5;
@@ -383,6 +387,66 @@
 
 [data-theme="dark"] .theme-moon {
   display: none;
+}
+
+@media (max-width: 639px) {
+  .prose p + p {
+    margin-top: 0.8em;
+  }
+
+  .prose h2 {
+    margin: 2em 0 0.6em;
+  }
+
+  .prose h3 {
+    margin: 1.6em 0 0.5em;
+  }
+
+  .prose :is(ul, ol) {
+    margin: 0.75em 0;
+  }
+
+  .prose li {
+    margin: 0.3em 0;
+  }
+
+  .prose hr {
+    margin: 40px auto;
+  }
+
+  .prose img {
+    margin: 24px 0;
+  }
+
+  .prose pre,
+  .prose table {
+    margin: 24px 0;
+  }
+}
+
+@media (hover: hover) {
+  .intent-dim {
+    opacity: 0.55;
+    transition: opacity 0.2s ease, color 0.15s ease;
+  }
+
+  .intent-zone:hover .intent-dim,
+  .intent-zone:focus-within .intent-dim,
+  .intent-dim:hover,
+  .intent-dim:focus-visible {
+    opacity: 1;
+  }
+
+  .intent-hidden {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .intent-zone:hover .intent-hidden,
+  .intent-zone:focus-within .intent-hidden,
+  .intent-hidden:focus-within {
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

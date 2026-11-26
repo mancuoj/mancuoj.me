@@ -7,11 +7,11 @@ const onTags = path === '/tags';
 ---
 
 <header class="flex items-center justify-between">
-  <a href="/" class="flex items-center gap-2.5" aria-current={onHome ? 'page' : undefined}>
+  <a href="/" class="flex items-center gap-3" aria-current={onHome ? 'page' : undefined}>
     <img src="/avatar-48.webp" alt="" width="24" height="24" decoding="async" class="size-6 rounded-full" />
-    <span class="text-[16px]">{site.title}</span>
+    <span class="text-[16px] text-fg">{site.title}</span>
   </a>
-  <nav class="flex items-center gap-5 text-[15px] text-muted" aria-label="主导航">
+  <nav class="flex items-center gap-6 text-[15px] text-muted" aria-label="主导航">
     <a
       href="/tags"
       class:list={['transition-colors hover:text-fg', onTags && 'text-fg']}

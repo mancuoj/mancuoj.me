@@ -8,19 +8,19 @@ const isExternal = (url: string) => url.startsWith('http');
 const currentYear = yearOf(localDate(new Date().toISOString(), site.timezone));
 ---
 
-<footer class="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-4">
-  <div class="flex flex-wrap items-center gap-x-3.5 gap-y-3">
-    <nav class="flex flex-wrap items-center gap-x-3.5 gap-y-3" aria-label="链接">
+<footer class="intent-zone mt-12 flex flex-wrap items-center justify-between gap-4 sm:mt-24">
+  <div class="intent-dim flex flex-wrap items-center gap-x-3 gap-y-3">
+    <nav class="flex flex-wrap items-center gap-x-3 gap-y-3" aria-label="链接">
       {
         site.social.map((item) => (
           <a
             href={item.url}
-            class="text-muted transition-colors hover:text-fg"
+            class="inline-flex size-6 items-center justify-center rounded-lg text-muted transition-colors hover:text-fg"
             aria-label={item.label}
             title={item.label}
             {...(isExternal(item.url) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
           >
-            <Icon name={item.icon} class="size-5" />
+            <Icon name={item.icon} class="size-6" />
           </a>
         ))
       }

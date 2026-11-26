@@ -67,8 +67,8 @@ const canonical = new URL(canonicalPath(Astro.url.pathname), site.homeUrl).toStr
   <body>
     <div
       class:list={[
-        'mx-auto w-[min(36rem,calc(100%-40px))] pb-16',
-        hideHeader ? 'pt-14' : 'pt-10 sm:pt-16',
+        'mx-auto w-[min(36rem,calc(100%-56px))] pb-16 sm:pb-24',
+        hideHeader ? 'pt-10 sm:pt-24' : 'pt-8 sm:pt-24',
       ]}
     >
       {!hideHeader && <Header />}

@@ -11,10 +11,10 @@ const { groups } = Astro.props;
 
 {
   groups.length > 0 && (
-    <section class="mt-10 space-y-10" aria-label="文章">
+    <section class="mt-10 space-y-10 sm:mt-24 sm:space-y-16" aria-label="文章">
       {groups.map((group) => (
-        <section class="grid gap-3 sm:grid-cols-[3.5rem_minmax(0,1fr)] sm:gap-x-6">
-          <h2 class="text-sm text-muted tabular-nums sm:sticky sm:top-4 sm:self-start sm:leading-7">
+        <section class="grid gap-2 sm:grid-cols-[4rem_minmax(0,1fr)] sm:gap-x-8">
+          <h2 class="text-[14px] leading-7 text-faint tabular-nums sm:sticky sm:top-6 sm:self-start sm:py-2">
             {group.year}
           </h2>
           <ol class="min-w-0">
